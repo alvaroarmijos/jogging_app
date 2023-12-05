@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracking_app/src/pages/pages.dart';
 
 void main() => runApp(const MyApp());
 
@@ -8,16 +9,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      title: 'Tracking App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Tracking App Bar'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
-      ),
-    );
+        theme: ThemeData(useMaterial3: true),
+        title: 'Tracking App',
+        home: const MapPage());
   }
 }
