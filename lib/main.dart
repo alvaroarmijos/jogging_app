@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/data/device/application.dart';
 
 import 'src/packages/features/gps_permissions/gps_permissions.dart';
 
 void main() {
   runApp(
     BlocProvider(
-      create: (context) => GpsPermissionsBloc(),
+      create: (context) =>
+          GpsPermissionsBloc(const GpsCurrentStatus(), const GpsStatus()),
       child: const MyApp(),
     ),
   );
