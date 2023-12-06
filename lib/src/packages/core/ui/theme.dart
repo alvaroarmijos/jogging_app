@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracking_app/src/ui/colors.dart';
+import 'package:tracking_app/src/packages/core/ui/colors.dart';
 
 class TrackingThemes {
   TrackingThemes._();
