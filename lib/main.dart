@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:tracking_app/src/pages/pages.dart';
-import 'package:tracking_app/src/ui/ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tracking_app/src/packages/core/ui/ui.dart';
 
-void main() => runApp(const MyApp());
+import 'src/packages/features/gps_permissions/gps_permissions.dart';
+
+void main() {
+  runApp(
+    BlocProvider(
+      create: (context) => GpsPermissionsBloc(),
+      child: const MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
