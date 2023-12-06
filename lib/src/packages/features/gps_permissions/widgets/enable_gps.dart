@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../ui/ui.dart';
+import '../../../core/ui/ui.dart';
 
 class EnableGps extends StatelessWidget {
   const EnableGps({
