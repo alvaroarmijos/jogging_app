@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
 
 class MapPage extends StatefulWidget {
@@ -19,9 +20,6 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Map Page'),
-      ),
       body: BlocBuilder<LocationBloc, LocationState>(
         builder: (context, state) {
           if (state.lastKownLocation == null) {
@@ -30,10 +28,11 @@ class _MapPageState extends State<MapPage> {
             );
           }
 
-          return Center(
-            child: Text(
-                '${state.lastKownLocation!.latitude}, ${state.lastKownLocation!.longitude}'),
-          );
+          return GoogleMap(
+              initialCameraPosition: CameraPosition(
+            target: state.lastKownLocation!,
+            zoom: 15,
+          ));
         },
       ),
     );
