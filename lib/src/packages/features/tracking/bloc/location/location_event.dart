@@ -6,3 +6,17 @@ sealed class LocationEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+final class GetCurrentPositionEvent extends LocationEvent {
+  const GetCurrentPositionEvent();
+}
+
+final class StartTrackingUserEvent extends LocationEvent {
+  const StartTrackingUserEvent();
+}
+
+final class NewUserLocationEvent extends LocationEvent {
+  const NewUserLocationEvent(this.newLocation);
+
+  final LatLng newLocation;
+}

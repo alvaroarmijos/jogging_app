@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissions.dart';
-import 'package:tracking_app/src/pages/pages.dart';
+import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
 
 class LoadingPage extends StatelessWidget {
   const LoadingPage({super.key});
