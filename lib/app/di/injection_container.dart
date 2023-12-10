@@ -16,6 +16,8 @@ Future<void> init() async {
   sl.registerFactory(() => const GpsCurrentStatus());
   sl.registerFactory(() => const GpsInitialStatus());
   sl.registerFactory(() => const OpenAppSettings());
+  sl.registerFactory(() => const GetCurrentPosition());
+  sl.registerFactory(() => const GetPositionStream());
 
   /// Features
   /// GPS Permissions
@@ -32,5 +34,5 @@ Future<void> init() async {
 
   /// Tracking
   // Bloc
-  sl.registerFactory(() => LocationBloc());
+  sl.registerFactory(() => LocationBloc(sl(), sl()));
 }
