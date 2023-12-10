@@ -2,6 +2,9 @@ part of 'gps_permissions_bloc.dart';
 
 sealed class GpsPermissionsEvent extends Equatable {
   const GpsPermissionsEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class GpsAndPermissionEvent extends GpsPermissionsEvent {
@@ -19,28 +22,16 @@ class GpsAndPermissionEvent extends GpsPermissionsEvent {
 
 class GpsInitialStatusEvent extends GpsPermissionsEvent {
   const GpsInitialStatusEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
 class ChangeGpsStatusEvent extends GpsPermissionsEvent {
   const ChangeGpsStatusEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
 class AskGpsAccessEvent extends GpsPermissionsEvent {
   const AskGpsAccessEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
 class OpenAppSettingsEvent extends GpsPermissionsEvent {
   const OpenAppSettingsEvent();
-
-  @override
-  List<Object?> get props => [];
 }

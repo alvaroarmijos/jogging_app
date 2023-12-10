@@ -12,7 +12,7 @@ class GpsPermissionsBloc
     extends Bloc<GpsPermissionsEvent, GpsPermissionsState> {
   GpsPermissionsBloc(
     this._gpsCurrentStatus,
-    this._gpsStatus,
+    this._gpsInitialStatus,
     this._askGpsAccess,
     this._openAppSettings,
     this._checkPermissionGranted,
@@ -27,7 +27,7 @@ class GpsPermissionsBloc
   }
 
   final GpsCurrentStatus _gpsCurrentStatus;
-  final GpsStatus _gpsStatus;
+  final GpsInitialStatus _gpsInitialStatus;
   final AskGpsAccess _askGpsAccess;
   final OpenAppSettings _openAppSettings;
   final CheckPermissionGranted _checkPermissionGranted;
@@ -65,7 +65,7 @@ class GpsPermissionsBloc
     Emitter<GpsPermissionsState> emit,
   ) {
     return emit.forEach(
-      _gpsStatus(),
+      _gpsInitialStatus(),
       onData: (data) => state.copyWith(isGpsEnabled: data),
     );
   }

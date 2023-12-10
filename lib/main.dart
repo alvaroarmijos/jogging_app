@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
-import 'package:tracking_app/src/packages/data/device/application.dart';
+import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
 import 'package:tracking_app/src/pages/loading_page.dart';
 
+import 'app/di/injection_container.dart' as di;
 import 'src/packages/features/gps_permissions/gps_permissions.dart';
 
-void main() {
+void main() async {
+  await di.init();
+
   runApp(
-    BlocProvider(
-      create: (context) => GpsPermissionsBloc(
-        const GpsCurrentStatus(),
-        const GpsStatus(),
-        const AskGpsAccess(),
-        const OpenAppSettings(),
-        const CheckPermissionGranted(),
-      ),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => di.sl<GpsPermissionsBloc>()),
+        BlocProvider(
+          create: (context) => di.sl<LocationBloc>(),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
