@@ -8,10 +8,12 @@ class LoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<GpsPermissionsBloc, GpsPermissionsState>(
-      builder: (context, state) {
-        return state.isAllGranted ? const MapPage() : const GpsPage();
-      },
-    ));
+    return Scaffold(
+      body: BlocBuilder<GpsPermissionsBloc, GpsPermissionsState>(
+        builder: (context, state) {
+          return state.isAllGranted ? const MapPage() : const GpsPage();
+        },
+      ),
+    );
   }
 }
