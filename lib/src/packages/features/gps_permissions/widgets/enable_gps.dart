@@ -41,7 +41,7 @@ class EnableGps extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: onPressed,
-          child: const Text("Activar GPS"),
+          child: const Text("Solicitar Permisos"),
         )
       ],
     );

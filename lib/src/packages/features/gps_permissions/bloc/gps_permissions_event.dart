@@ -30,3 +30,17 @@ class ChangeGpsStatusEvent extends GpsPermissionsEvent {
   @override
   List<Object?> get props => [];
 }
+
+class AskGpsAccessEvent extends GpsPermissionsEvent {
+  const AskGpsAccessEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class OpenAppSettingsEvent extends GpsPermissionsEvent {
+  const OpenAppSettingsEvent();
+
+  @override
+  List<Object?> get props => [];
+}
