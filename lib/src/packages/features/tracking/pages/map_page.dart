@@ -11,9 +11,13 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  late final MapBloc mapBloc;
+
   @override
   void initState() {
     context.read<LocationBloc>().add(const StartTrackingUserEvent());
+    mapBloc = context.read<MapBloc>();
+
     super.initState();
   }
 
@@ -29,10 +33,15 @@ class _MapPageState extends State<MapPage> {
           }
 
           return GoogleMap(
-              initialCameraPosition: CameraPosition(
-            target: state.lastKownLocation!,
-            zoom: 15,
-          ));
+            zoomControlsEnabled: false,
+            myLocationButtonEnabled: false,
+            initialCameraPosition: CameraPosition(
+              target: state.lastKownLocation!,
+              zoom: 15,
+            ),
+            onMapCreated: (controller) =>
+                mapBloc.add(MapInitializedEvent(controller)),
+          );
         },
       ),
     );
