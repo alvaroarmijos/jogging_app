@@ -12,6 +12,7 @@ final class LocationState extends Equatable {
   LocationState copyWith({
     LatLng? lastKownLocation,
     List<LatLng>? myLocationHistory,
+    bool? isFollowingUser,
   }) =>
       LocationState(
         lastKownLocation: lastKownLocation ?? this.lastKownLocation,

@@ -12,3 +12,9 @@ final class MapInitializedEvent extends MapEvent {
 
   const MapInitializedEvent(this.controller);
 }
+
+final class FollowingUserEvent extends MapEvent {
+  const FollowingUserEvent(this.isFollowigUser);
+
+  final bool isFollowigUser;
+}

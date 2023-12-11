@@ -35,16 +35,20 @@ class _MapPageState extends State<MapPage> {
             );
           }
 
-          return GoogleMap(
-            zoomControlsEnabled: false,
-            myLocationButtonEnabled: false,
-            myLocationEnabled: true,
-            initialCameraPosition: CameraPosition(
-              target: state.lastKownLocation!,
-              zoom: 15,
+          return Listener(
+            onPointerMove: (event) =>
+                mapBloc.add(const FollowingUserEvent(false)),
+            child: GoogleMap(
+              zoomControlsEnabled: false,
+              myLocationButtonEnabled: false,
+              myLocationEnabled: true,
+              initialCameraPosition: CameraPosition(
+                target: state.lastKownLocation!,
+                zoom: 15,
+              ),
+              onMapCreated: (controller) =>
+                  mapBloc.add(MapInitializedEvent(controller)),
             ),
-            onMapCreated: (controller) =>
-                mapBloc.add(MapInitializedEvent(controller)),
           );
         },
       ),
@@ -57,7 +61,7 @@ class _MapPageState extends State<MapPage> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             return;
           }
-
+          mapBloc.add(const FollowingUserEvent(true));
           mapBloc.moveCamera(userLocation);
         },
         child: const Icon(Icons.my_location),

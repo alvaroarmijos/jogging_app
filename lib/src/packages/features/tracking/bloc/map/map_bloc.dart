@@ -13,8 +13,10 @@ part 'map_state.dart';
 class MapBloc extends Bloc<MapEvent, MapState> {
   MapBloc(this.locationBloc) : super(const MapState()) {
     on<MapInitializedEvent>(_onMapInitializedEvent);
+    on<FollowingUserEvent>(_onFollowingUserEvent);
 
     locationBloc.stream.listen((locationState) {
+      if (!state.isFollowingUser) return;
       if (locationState.lastKownLocation == null) return;
       moveCamera(locationState.lastKownLocation!);
     });
@@ -31,6 +33,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     _mapController = event.controller;
     _mapController!.setMapStyle(jsonEncode(mapStyle));
     emit(state.copyWith(isMapInitialized: true));
+  }
+
+  FutureOr<void> _onFollowingUserEvent(
+    FollowingUserEvent event,
+    Emitter<MapState> emit,
+  ) {
+    emit(state.copyWith(isFollowingUser: event.isFollowigUser));
   }
 
   void moveCamera(LatLng newLocation) {
