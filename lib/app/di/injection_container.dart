@@ -35,4 +35,5 @@ Future<void> init() async {
   /// Tracking
   // Bloc
   sl.registerFactory(() => LocationBloc(sl(), sl()));
+  sl.registerFactory(() => MapBloc());
 }

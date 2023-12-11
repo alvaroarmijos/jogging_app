@@ -14,9 +14,8 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => di.sl<GpsPermissionsBloc>()),
-        BlocProvider(
-          create: (context) => di.sl<LocationBloc>(),
-        ),
+        BlocProvider(create: (context) => di.sl<LocationBloc>()),
+        BlocProvider(create: (context) => di.sl<MapBloc>()),
       ],
       child: const MyApp(),
     ),
