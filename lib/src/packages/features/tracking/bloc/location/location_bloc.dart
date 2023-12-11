@@ -26,9 +26,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     Emitter<LocationState> emit,
   ) {
     return emit.forEach(_getCurrentPosition(), onData: (data) {
-      print(
-        "${data.latitude} ${data.longitude}",
-      );
       return const LocationState();
     });
   }
