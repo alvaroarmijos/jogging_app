@@ -18,3 +18,13 @@ final class FollowingUserEvent extends MapEvent {
 
   final bool isFollowigUser;
 }
+
+final class UpdateUserPolylineEvent extends MapEvent {
+  const UpdateUserPolylineEvent(this.userLocations);
+
+  final List<LatLng> userLocations;
+}
+
+final class ChangeShowUserRouteEvent extends MapEvent {
+  const ChangeShowUserRouteEvent();
+}

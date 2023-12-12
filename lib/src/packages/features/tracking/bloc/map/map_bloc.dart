@@ -14,6 +14,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   MapBloc(this.locationBloc) : super(const MapState()) {
     on<MapInitializedEvent>(_onMapInitializedEvent);
     on<FollowingUserEvent>(_onFollowingUserEvent);
+    on<UpdateUserPolylineEvent>(_onUpdateUserPolylineEvent);
+    on<ChangeShowUserRouteEvent>(_onChangeShowUserRouteEvent);
 
     locationStateSubscription = locationBloc.stream.listen((locationState) {
       if (locationState.lastKownLocation != null) {
@@ -44,6 +46,32 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     Emitter<MapState> emit,
   ) {
     emit(state.copyWith(isFollowingUser: event.isFollowigUser));
+  }
+
+  FutureOr<void> _onUpdateUserPolylineEvent(
+    UpdateUserPolylineEvent event,
+    Emitter<MapState> emit,
+  ) {
+    final myRoute = Polyline(
+      polylineId: const PolylineId("myRoute"),
+      color: TrackingColors.primary,
+      width: 5,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+      points: event.userLocations,
+    );
+
+    final currentPolylines = Map<String, Polyline>.from(state.polylines);
+    currentPolylines["myRoute"] = myRoute;
+
+    emit(state.copyWith(polylines: currentPolylines));
+  }
+
+  FutureOr<void> _onChangeShowUserRouteEvent(
+    ChangeShowUserRouteEvent event,
+    Emitter<MapState> emit,
+  ) {
+    emit(state.copyWith(showMyRoute: !state.showMyRoute));
   }
 
   void moveCamera(LatLng newLocation) {
