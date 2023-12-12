@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/core/ui/lib/src/widgets/custom_snackbar.dart';
 import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
-import 'package:tracking_app/src/packages/features/tracking/widgets/map_view.dart';
+
+import '../widgets/widgets.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -42,9 +43,14 @@ class _MapPageState extends State<MapPage> {
                 polylines.removeWhere((key, value) => key == 'myRoute');
               }
 
-              return MapView(
-                initialLocation: locationState.lastKownLocation!,
-                polylines: polylines.values.toSet(),
+              return Stack(
+                children: [
+                  MapView(
+                    initialLocation: locationState.lastKownLocation!,
+                    polylines: polylines.values.toSet(),
+                  ),
+                  const SearchBarIcon(),
+                ],
               );
             },
           );
