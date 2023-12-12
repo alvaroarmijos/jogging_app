@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/core/ui/lib/src/widgets/custom_snackbar.dart';
 import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
+import 'package:tracking_app/src/packages/features/tracking/widgets/map_view.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -28,27 +28,20 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<LocationBloc, LocationState>(
-        builder: (context, state) {
-          if (state.lastKownLocation == null) {
+        builder: (context, locationState) {
+          if (locationState.lastKownLocation == null) {
             return const Center(
               child: Text('Espere por favor'),
             );
           }
 
-          return Listener(
-            onPointerMove: (event) =>
-                mapBloc.add(const FollowingUserEvent(false)),
-            child: GoogleMap(
-              zoomControlsEnabled: false,
-              myLocationButtonEnabled: false,
-              myLocationEnabled: true,
-              initialCameraPosition: CameraPosition(
-                target: state.lastKownLocation!,
-                zoom: 15,
-              ),
-              onMapCreated: (controller) =>
-                  mapBloc.add(MapInitializedEvent(controller)),
-            ),
+          return BlocBuilder<MapBloc, MapState>(
+            builder: (context, mapState) {
+              return MapView(
+                initialLocation: locationState.lastKownLocation!,
+                polylines: mapState.polylines.values.toSet(),
+              );
+            },
           );
         },
       ),
