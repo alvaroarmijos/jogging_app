@@ -21,7 +21,6 @@ class _MapPageState extends State<MapPage> {
     locationBloc = context.read<LocationBloc>()
       ..add(const StartTrackingUserEvent());
     mapBloc = context.read<MapBloc>();
-
     super.initState();
   }
 
