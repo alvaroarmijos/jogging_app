@@ -15,7 +15,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<MapInitializedEvent>(_onMapInitializedEvent);
     on<FollowingUserEvent>(_onFollowingUserEvent);
 
-    locationBloc.stream.listen((locationState) {
+    locationStateSubscription = locationBloc.stream.listen((locationState) {
+      if (locationState.lastKownLocation != null) {
+        add(UpdateUserPolylineEvent(locationState.myLocationHistory));
+      }
       if (!state.isFollowingUser) return;
       if (locationState.lastKownLocation == null) return;
       moveCamera(locationState.lastKownLocation!);
@@ -23,6 +26,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   }
 
   GoogleMapController? _mapController;
+  StreamSubscription<LocationState>? locationStateSubscription;
 
   final LocationBloc locationBloc;
 
@@ -45,5 +49,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void moveCamera(LatLng newLocation) {
     final cameraUpdate = CameraUpdate.newLatLng(newLocation);
     _mapController?.animateCamera(cameraUpdate);
+  }
+
+  @override
+  Future<void> close() {
+    locationStateSubscription?.cancel();
+    return super.close();
   }
 }
