@@ -50,6 +50,7 @@ class _MapPageState extends State<MapPage> {
                     polylines: polylines.values.toSet(),
                   ),
                   const SearchBarIcon(),
+                  const ManualMarker(),
                 ],
               );
             },

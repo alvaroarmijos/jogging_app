@@ -1,3 +1,4 @@
+export './manual_marker.dart';
 export './map_view.dart';
 export './search_bar_icon.dart';
-export 'search_destination_delegate.dart';
+export './search_destination_delegate.dart';
