@@ -1,7 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissions.dart';
-import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
+
+import '../../src/packages/features/tracking/tracking.dart';
 
 final sl = GetIt.instance;
 
@@ -35,4 +36,5 @@ Future<void> init() async {
   /// Tracking
   // Bloc
   sl.registerFactory(() => LocationBloc(sl(), sl()));
+  sl.registerFactory(() => SearchBloc());
 }

@@ -19,6 +19,7 @@ void main() async {
         //to track the user location and move the camera
         BlocProvider(
             create: (context) => MapBloc(context.read<LocationBloc>())),
+        BlocProvider(create: (context) => di.sl<SearchBloc>()),
       ],
       child: const MyApp(),
     ),
