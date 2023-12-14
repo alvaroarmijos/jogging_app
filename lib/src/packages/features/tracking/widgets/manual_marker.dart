@@ -1,9 +1,26 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
 
 class ManualMarker extends StatelessWidget {
   const ManualMarker({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        return (state.showManulMarker)
+            ? const _ManualMarkerView()
+            : const SizedBox();
+      },
+    );
+  }
+}
+
+class _ManualMarkerView extends StatelessWidget {
+  const _ManualMarkerView();
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +36,10 @@ class ManualMarker extends StatelessWidget {
             child: Transform.translate(
               offset: const Offset(0, -20),
               child: BounceInDown(
-                child: const Icon(
+                child: Icon(
                   Icons.location_on_rounded,
                   size: 50,
+                  color: TrackingColors.primary,
                 ),
               ),
             ),

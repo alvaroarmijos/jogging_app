@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -6,8 +8,13 @@ part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc() : super(const SearchState()) {
-    on<SearchEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<ShowManualMarkerEvent>(_onShowManualMarkerEvent);
+  }
+
+  FutureOr<void> _onShowManualMarkerEvent(
+    ShowManualMarkerEvent event,
+    Emitter<SearchState> emit,
+  ) {
+    emit(state.copyWith(showManulMarker: true));
   }
 }
