@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
@@ -27,7 +28,7 @@ class _SearchBarIconView extends StatelessWidget {
     final searchBloc = context.read<SearchBloc>();
 
     if (result.manual) {
-      searchBloc.add(const ShowManualMarkerEvent());
+      searchBloc.add(const ShowManualMarkerEvent(true));
       return;
     }
   }
@@ -37,18 +38,21 @@ class _SearchBarIconView extends StatelessWidget {
     return SafeArea(
         child: Align(
       alignment: Alignment.topRight,
-      child: CircleAvatar(
-        backgroundColor: Colors.white,
-        child: IconButton(
-          onPressed: () async {
-            final result = await showSearch(
-                context: context, delegate: SerchDestinationDelegate());
-            if (result == null) return;
-            onSearchResult(context, result);
-          },
-          icon: Icon(
-            Icons.search,
-            color: TrackingColors.primary,
+      child: FadeInDown(
+        duration: const Duration(milliseconds: 300),
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          child: IconButton(
+            onPressed: () async {
+              final result = await showSearch(
+                  context: context, delegate: SerchDestinationDelegate());
+              if (result == null) return;
+              onSearchResult(context, result);
+            },
+            icon: Icon(
+              Icons.search,
+              color: TrackingColors.primary,
+            ),
           ),
         ),
       ),

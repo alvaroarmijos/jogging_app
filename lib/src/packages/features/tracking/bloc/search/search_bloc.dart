@@ -15,6 +15,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     ShowManualMarkerEvent event,
     Emitter<SearchState> emit,
   ) {
-    emit(state.copyWith(showManulMarker: true));
+    emit(state.copyWith(showManulMarker: event.showManualMarker));
   }
 }

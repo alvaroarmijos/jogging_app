@@ -25,13 +25,16 @@ class _ManualMarkerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+    final searchBloc = context.read<SearchBloc>();
 
     return SizedBox(
       width: size.width,
       height: size.height,
       child: Stack(
         children: [
-          const _BtnBack(),
+          _BtnBack(
+            onPressed: () => searchBloc.add(const ShowManualMarkerEvent(false)),
+          ),
           Center(
             child: Transform.translate(
               offset: const Offset(0, -20),
@@ -66,7 +69,11 @@ class _ManualMarkerView extends StatelessWidget {
 }
 
 class _BtnBack extends StatelessWidget {
-  const _BtnBack();
+  const _BtnBack({
+    required this.onPressed,
+  });
+
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +88,7 @@ class _BtnBack extends StatelessWidget {
               Icons.arrow_back_ios_new,
               color: TrackingColors.primary,
             ),
-            onPressed: () {},
+            onPressed: onPressed,
           ),
         ),
       ),

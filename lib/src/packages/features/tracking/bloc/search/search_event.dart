@@ -8,5 +8,10 @@ sealed class SearchEvent extends Equatable {
 }
 
 final class ShowManualMarkerEvent extends SearchEvent {
-  const ShowManualMarkerEvent();
+  const ShowManualMarkerEvent(this.showManualMarker);
+
+  final bool showManualMarker;
+
+  @override
+  List<Object> get props => [showManualMarker];
 }
