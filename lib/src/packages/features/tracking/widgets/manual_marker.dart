@@ -9,13 +9,23 @@ class ManualMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SearchBloc, SearchState>(
+    return BlocConsumer<SearchBloc, SearchState>(
+      listenWhen: (previous, current) => previous.loading != current.loading,
+      listener: _listenState,
       builder: (context, state) {
         return (state.showManulMarker)
             ? const _ManualMarkerView()
             : const SizedBox();
       },
     );
+  }
+
+  void _listenState(BuildContext context, SearchState state) {
+    if (state.loading) {
+      showLoadingMessage(context);
+    } else {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
   }
 }
 
@@ -26,6 +36,8 @@ class _ManualMarkerView extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final searchBloc = context.read<SearchBloc>();
+    final locationBloc = context.read<LocationBloc>();
+    final mapBloc = context.read<MapBloc>();
 
     return SizedBox(
       width: size.width,
@@ -58,7 +70,15 @@ class _ManualMarkerView extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     child: const Text("Confirmar"),
-                    onPressed: () {},
+                    onPressed: () {
+                      final start = locationBloc.state.lastKownLocation;
+                      if (start == null) return;
+
+                      final end = mapBloc.mapCenter;
+                      if (end == null) return;
+
+                      searchBloc.add(GetRouteEvent(start, end));
+                    },
                   ),
                 ),
               ))
