@@ -28,3 +28,9 @@ final class UpdateUserPolylineEvent extends MapEvent {
 final class ChangeShowUserRouteEvent extends MapEvent {
   const ChangeShowUserRouteEvent();
 }
+
+class AddPolylineEvent extends MapEvent {
+  const AddPolylineEvent(this.polylines);
+
+  final Map<String, Polyline> polylines;
+}
