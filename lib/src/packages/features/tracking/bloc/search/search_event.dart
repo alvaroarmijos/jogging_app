@@ -15,3 +15,16 @@ final class ShowManualMarkerEvent extends SearchEvent {
   @override
   List<Object> get props => [showManualMarker];
 }
+
+final class GetRouteEvent extends SearchEvent {
+  const GetRouteEvent(
+    this.start,
+    this.end,
+  );
+
+  final LatLng start;
+  final LatLng end;
+
+  @override
+  List<Object> get props => [start, end];
+}
