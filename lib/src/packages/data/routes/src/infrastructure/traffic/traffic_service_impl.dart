@@ -6,16 +6,16 @@ import 'package:tracking_app/src/packages/data/routes/src/infrastructure/traffic
 
 class TrafficServiceImpl implements TrafficService {
   TrafficServiceImpl(
-    this._trafficApiClient,
+    this._routesApiClient,
     this._trafficMapper,
   );
 
-  final TrafficApiClient _trafficApiClient;
+  final RoutesApiClient _routesApiClient;
   final TrafficMapper _trafficMapper;
 
   @override
   Stream<Traffic> getRouteByCoordinates(LatLng start, LatLng end) =>
-      _trafficApiClient
+      _routesApiClient
           .getCoorsStartToEnd(start, end)
           .asStream()
           .map((dtos) => _trafficMapper.fromApiDto(dtos));
