@@ -16,6 +16,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<ShowManualMarkerEvent>(_onShowManualMarkerEvent);
     on<GetRouteEvent>(_onGetRouteEvent);
     on<GetPlacesEvent>(_onGetPlacesEvent);
+    on<AddToHistoryEvent>(_onAddToHistoryEvent);
   }
 
   final GetRoutes _getRoutes;
@@ -48,5 +49,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       _searchPlaces(event.proximity, event.query),
       onData: (data) => state.copyWith(places: data),
     );
+  }
+
+  FutureOr<void> _onAddToHistoryEvent(
+    AddToHistoryEvent event,
+    Emitter<SearchState> emit,
+  ) {
+    emit(state.copyWith(history: [event.place, ...state.history]));
   }
 }

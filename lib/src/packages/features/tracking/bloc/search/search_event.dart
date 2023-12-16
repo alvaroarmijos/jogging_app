@@ -41,3 +41,14 @@ final class GetPlacesEvent extends SearchEvent {
   @override
   List<Object> get props => [proximity, query];
 }
+
+final class AddToHistoryEvent extends SearchEvent {
+  const AddToHistoryEvent(
+    this.place,
+  );
+
+  final Place place;
+
+  @override
+  List<Object> get props => [place];
+}

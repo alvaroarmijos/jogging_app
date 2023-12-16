@@ -32,7 +32,8 @@ class SerchDestinationDelegate extends SearchDelegate<SearchResult> {
   Widget buildResults(BuildContext context) {
     final lastKnownLocation =
         context.read<LocationBloc>().state.lastKownLocation!;
-    context.read<SearchBloc>().add(GetPlacesEvent(lastKnownLocation, query));
+    final searchBloc = context.read<SearchBloc>()
+      ..add(GetPlacesEvent(lastKnownLocation, query));
 
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
@@ -57,6 +58,8 @@ class SerchDestinationDelegate extends SearchDelegate<SearchResult> {
                   description: place.placeName,
                 );
 
+                searchBloc.add(AddToHistoryEvent(place));
+
                 close(context, result);
               },
             );
@@ -70,6 +73,8 @@ class SerchDestinationDelegate extends SearchDelegate<SearchResult> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    final history = context.read<SearchBloc>().state.history;
+
     return ListView(
       children: [
         ListTile(
@@ -82,7 +87,25 @@ class SerchDestinationDelegate extends SearchDelegate<SearchResult> {
             final searchResult = SearchResult(cancel: false, manual: true);
             close(context, searchResult);
           },
-        )
+        ),
+        ...history.map((place) => ListTile(
+              leading: Icon(
+                Icons.history_outlined,
+                color: TrackingColors.primary,
+              ),
+              title: Text(place.text),
+              subtitle: Text(place.placeName),
+              onTap: () {
+                final result = SearchResult(
+                  cancel: false,
+                  manual: false,
+                  position: LatLng(place.center[1], place.center[0]),
+                  name: place.text,
+                  description: place.placeName,
+                );
+                close(context, result);
+              },
+            ))
       ],
     );
   }
