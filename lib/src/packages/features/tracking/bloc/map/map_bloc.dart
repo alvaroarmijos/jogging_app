@@ -92,7 +92,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     AddPolylineEvent event,
     Emitter<MapState> emit,
   ) {
-    emit(state.copyWith(polylines: event.polylines));
+    emit(state.copyWith(polylines: event.polylines, markers: event.markers));
   }
 
   void moveCamera(LatLng newLocation) {
@@ -110,11 +110,18 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       endCap: Cap.roundCap,
     );
 
-    final currentPolylines = Map<String, Polyline>.from(state.polylines);
+    final startMarker = Marker(
+      markerId: const MarkerId('start'),
+      position: traffic.points.first,
+    );
 
+    final currentPolylines = Map<String, Polyline>.from(state.polylines);
     currentPolylines['route'] = myRoute;
 
-    add(AddPolylineEvent(currentPolylines));
+    final currentMarkers = Map<String, Marker>.from(state.markers);
+    currentMarkers['start'] = startMarker;
+
+    add(AddPolylineEvent(currentPolylines, currentMarkers));
   }
 
   @override

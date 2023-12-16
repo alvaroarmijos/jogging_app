@@ -9,10 +9,12 @@ class MapView extends StatelessWidget {
     super.key,
     required this.initialLocation,
     required this.polylines,
+    required this.markers,
   });
 
   final LatLng initialLocation;
   final Set<Polyline> polylines;
+  final Set<Marker> markers;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class MapView extends StatelessWidget {
         myLocationButtonEnabled: false,
         myLocationEnabled: true,
         polylines: polylines,
+        markers: markers,
         initialCameraPosition: CameraPosition(
           target: initialLocation,
           zoom: 15,
