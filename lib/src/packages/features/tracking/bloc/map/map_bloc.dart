@@ -110,12 +110,18 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       endCap: Cap.roundCap,
     );
 
+    double kms = traffic.distance / 1000;
+    kms = (kms * 100).floorToDouble();
+    kms /= 100;
+
+    double walkingDuration = (traffic.duration / 60).floorToDouble();
+
     final startMarker = Marker(
       markerId: const MarkerId('start'),
       position: traffic.points.first,
-      infoWindow: const InfoWindow(
+      infoWindow: InfoWindow(
         title: 'Inicio',
-        snippet: 'Este es el punto de inicio de mi ruta',
+        snippet: 'kms: $kms, duration: $walkingDuration',
       ),
     );
 
@@ -134,6 +140,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     final currentMarkers = Map<String, Marker>.from(state.markers);
     currentMarkers['start'] = startMarker;
     currentMarkers['end'] = endmarker;
+
+    Future.delayed(const Duration(milliseconds: 300)).then(
+      (value) => _mapController?.showMarkerInfoWindow(const MarkerId('start')),
+    );
 
     add(AddPolylineEvent(currentPolylines, currentMarkers));
   }
