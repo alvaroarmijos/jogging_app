@@ -36,7 +36,7 @@ class RoutesApiClient {
       'proximity': '${proximity.longitude},${proximity.latitude}',
     });
 
-    final placesResponse = PlacesDto.fromJson(resp.data);
+    final placesResponse = PlacesDto.fromMap(resp.data);
 
     return placesResponse.features;
   }

@@ -221,8 +221,6 @@ class FeatureDto {
   final List<ContextDto> context;
   final String? languageEs;
   final String? language;
-  final String matchingText;
-  final String matchingPlaceName;
 
   FeatureDto({
     required this.id,
@@ -238,8 +236,6 @@ class FeatureDto {
     required this.context,
     this.languageEs,
     this.language,
-    required this.matchingText,
-    required this.matchingPlaceName,
   });
 
   factory FeatureDto.fromJson(String str) =>
@@ -262,8 +258,6 @@ class FeatureDto {
             json["context"].map((x) => ContextDto.fromMap(x))),
         languageEs: json["language_es"],
         language: json["language"],
-        matchingText: json["matching_text"],
-        matchingPlaceName: json["matching_place_name"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -280,8 +274,6 @@ class FeatureDto {
         "context": List<dynamic>.from(context.map((x) => x.toMap())),
         "language_es": languageEs,
         "language": language,
-        "matching_text": matchingText,
-        "matching_place_name": matchingPlaceName,
       };
 }
 

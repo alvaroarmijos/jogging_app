@@ -16,8 +16,6 @@ class PlacesMapper {
     final center = apiDto.center;
     final geometry = _geometryFromApiDto(apiDto.geometry);
     final context = _fromApiContextDtoList(apiDto.context);
-    final matchingText = apiDto.matchingText;
-    final matchingPlaceName = apiDto.matchingPlaceName;
 
     return Place(
       id: id,
@@ -31,8 +29,6 @@ class PlacesMapper {
       center: center,
       geometry: geometry,
       context: context,
-      matchingText: matchingText,
-      matchingPlaceName: matchingPlaceName,
     );
   }
 

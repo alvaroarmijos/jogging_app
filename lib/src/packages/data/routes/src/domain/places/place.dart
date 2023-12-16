@@ -12,8 +12,6 @@ class Place {
   final List<Context> context;
   final String? languageEs;
   final String? language;
-  final String matchingText;
-  final String matchingPlaceName;
 
   Place({
     required this.id,
@@ -29,8 +27,6 @@ class Place {
     required this.context,
     this.languageEs,
     this.language,
-    required this.matchingText,
-    required this.matchingPlaceName,
   });
 }
 
