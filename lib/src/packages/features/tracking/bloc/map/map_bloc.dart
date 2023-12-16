@@ -115,11 +115,17 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       position: traffic.points.first,
     );
 
+    final endmarker = Marker(
+      markerId: const MarkerId('end'),
+      position: traffic.points.last,
+    );
+
     final currentPolylines = Map<String, Polyline>.from(state.polylines);
     currentPolylines['route'] = myRoute;
 
     final currentMarkers = Map<String, Marker>.from(state.markers);
     currentMarkers['start'] = startMarker;
+    currentMarkers['end'] = endmarker;
 
     add(AddPolylineEvent(currentPolylines, currentMarkers));
   }
