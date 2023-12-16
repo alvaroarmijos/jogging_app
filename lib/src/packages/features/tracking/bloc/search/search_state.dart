@@ -5,6 +5,7 @@ final class SearchState extends Equatable {
     this.showManulMarker = false,
     this.loading = false,
     this.traffic,
+    this.endPlace,
     this.places = const [],
     this.history = const [],
   });
@@ -14,6 +15,7 @@ final class SearchState extends Equatable {
   final Traffic? traffic;
   final List<Place> places;
   final List<Place> history;
+  final Place? endPlace;
 
   SearchState copyWith({
     bool? showManulMarker,
@@ -21,6 +23,7 @@ final class SearchState extends Equatable {
     Traffic? traffic,
     List<Place>? places,
     List<Place>? history,
+    Place? endPlace,
   }) =>
       SearchState(
         showManulMarker: showManulMarker ?? this.showManulMarker,
@@ -28,6 +31,7 @@ final class SearchState extends Equatable {
         traffic: traffic ?? this.traffic,
         places: places ?? this.places,
         history: history ?? this.history,
+        endPlace: endPlace ?? this.endPlace,
       );
 
   @override
@@ -37,5 +41,6 @@ final class SearchState extends Equatable {
         loading,
         places,
         history,
+        endPlace,
       ];
 }

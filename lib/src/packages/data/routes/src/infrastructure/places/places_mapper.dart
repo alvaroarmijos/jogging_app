@@ -63,13 +63,11 @@ class PlacesMapper {
 
   Context _contextFromApiDto(ContextDto dto) {
     final id = dto.id;
-    final mapboxId = dto.mapboxId;
     final textEs = dto.textEs;
     final text = dto.text;
 
     return Context(
       id: id,
-      mapboxId: mapboxId,
       textEs: textEs,
       text: text,
     );

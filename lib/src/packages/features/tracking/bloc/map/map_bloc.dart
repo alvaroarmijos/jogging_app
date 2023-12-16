@@ -33,7 +33,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     searchStateSubscription = searchBloc.stream.listen((searchState) {
       if (searchState.traffic != null) {
-        drawRoutePolyline(searchState.traffic!);
+        drawRoutePolyline(searchState.traffic!, endPlace: searchState.endPlace);
       }
     });
   }
@@ -100,7 +100,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     _mapController?.animateCamera(cameraUpdate);
   }
 
-  void drawRoutePolyline(Traffic traffic) async {
+  void drawRoutePolyline(Traffic traffic, {Place? endPlace}) async {
     final myRoute = Polyline(
       polylineId: const PolylineId('route'),
       color: TrackingColors.primary,
@@ -128,9 +128,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     final endmarker = Marker(
       markerId: const MarkerId('end'),
       position: traffic.points.last,
-      infoWindow: const InfoWindow(
-        title: 'Fin',
-        snippet: 'Este es el punto de final de mi ruta',
+      infoWindow: InfoWindow(
+        title: endPlace?.text ?? 'Fin',
+        snippet: endPlace?.placeName ?? 'Este es el punto de final de mi ruta',
       ),
     );
 

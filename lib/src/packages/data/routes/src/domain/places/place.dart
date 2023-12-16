@@ -32,7 +32,6 @@ class Place {
 
 class Context {
   final String id;
-  final String mapboxId;
   final String textEs;
   final String text;
   final String? wikidata;
@@ -42,7 +41,6 @@ class Context {
 
   Context({
     required this.id,
-    required this.mapboxId,
     required this.textEs,
     required this.text,
     this.wikidata,

@@ -18,4 +18,10 @@ class PlacesServiceImpl implements PlacesService {
           .searchPlaces(proximity, query)
           .asStream()
           .map((dtos) => _placesMapper.fromApiDtoList(dtos));
+
+  @override
+  Stream<Place> getPlaceByPoint(LatLng point) => _routesApiClient
+      .getPlaceInformation(point)
+      .asStream()
+      .map((dto) => _placesMapper.fromApiDto(dto));
 }

@@ -34,10 +34,22 @@ class RoutesApiClient {
 
     final resp = await _dioPlaces.get(url, queryParameters: {
       'proximity': '${proximity.longitude},${proximity.latitude}',
+      'limit': 5,
     });
 
     final placesResponse = PlacesDto.fromMap(resp.data);
 
     return placesResponse.features;
+  }
+
+  Future<FeatureDto> getPlaceInformation(LatLng point) async {
+    final url = "$_basePlacesUrl/${point.longitude},${point.latitude}.json";
+    final response = await _dioPlaces.get(url, queryParameters: {
+      'limit': 1,
+    });
+
+    final placesResponse = PlacesDto.fromMap(response.data);
+
+    return placesResponse.features[0];
   }
 }

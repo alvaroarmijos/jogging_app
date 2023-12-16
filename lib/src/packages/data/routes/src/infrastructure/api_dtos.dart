@@ -176,13 +176,11 @@ class WaypointDto {
 
 class PlacesDto {
   final String type;
-  final List<String> query;
   final List<FeatureDto> features;
   final String attribution;
 
   PlacesDto({
     required this.type,
-    required this.query,
     required this.features,
     required this.attribution,
   });
@@ -193,7 +191,6 @@ class PlacesDto {
 
   factory PlacesDto.fromMap(Map<String, dynamic> json) => PlacesDto(
         type: json["type"],
-        query: List<String>.from(json["query"].map((x) => x)),
         features: List<FeatureDto>.from(
             json["features"].map((x) => FeatureDto.fromMap(x))),
         attribution: json["attribution"],
@@ -201,7 +198,6 @@ class PlacesDto {
 
   Map<String, dynamic> toMap() => {
         "type": type,
-        "query": List<dynamic>.from(query.map((x) => x)),
         "features": List<dynamic>.from(features.map((x) => x.toMap())),
         "attribution": attribution,
       };
@@ -280,7 +276,6 @@ class FeatureDto {
 /// Routes
 class ContextDto {
   final String id;
-  final String mapboxId;
   final String textEs;
   final String text;
   final String? wikidata;
@@ -290,7 +285,6 @@ class ContextDto {
 
   ContextDto({
     required this.id,
-    required this.mapboxId,
     required this.textEs,
     required this.text,
     this.wikidata,
@@ -306,7 +300,6 @@ class ContextDto {
 
   factory ContextDto.fromMap(Map<String, dynamic> json) => ContextDto(
         id: json["id"],
-        mapboxId: json["mapbox_id"],
         textEs: json["text_es"],
         text: json["text"],
         wikidata: json["wikidata"],
@@ -317,7 +310,6 @@ class ContextDto {
 
   Map<String, dynamic> toMap() => {
         "id": id,
-        "mapbox_id": mapboxId,
         "text_es": textEs,
         "text": text,
         "wikidata": wikidata,

@@ -9,7 +9,6 @@ class PlacesInterceptor extends Interceptor {
     options.queryParameters.addAll({
       'access_token': accessToken,
       'language': 'es',
-      'limit': 5,
     });
 
     super.onRequest(options, handler);

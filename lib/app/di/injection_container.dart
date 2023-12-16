@@ -32,6 +32,7 @@ Future<void> init() async {
   // Application
   sl.registerLazySingleton(() => GetRoutes(sl()));
   sl.registerLazySingleton(() => SearchPlaces(sl()));
+  sl.registerLazySingleton(() => GetPlace(sl()));
   // Domain
   sl.registerLazySingleton<TrafficService>(
       () => TrafficServiceImpl(sl(), sl()));
@@ -57,5 +58,5 @@ Future<void> init() async {
   /// Tracking
   // Bloc
   sl.registerFactory(() => LocationBloc(sl(), sl()));
-  sl.registerFactory(() => SearchBloc(sl(), sl()));
+  sl.registerFactory(() => SearchBloc(sl(), sl(), sl()));
 }
