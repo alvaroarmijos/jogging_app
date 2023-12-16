@@ -1,10 +1,10 @@
-import 'package:tracking_app/src/packages/data/routes/src/domain/places/places.dart';
+import 'package:tracking_app/src/packages/data/routes/src/domain/places/place.dart';
 import 'package:tracking_app/src/packages/data/routes/src/infrastructure/api_dtos.dart';
 
 class PlacesMapper {
   const PlacesMapper();
 
-  Feature fromApiDto(FeatureDto apiDto) {
+  Place fromApiDto(FeatureDto apiDto) {
     final id = apiDto.id;
     final type = apiDto.type;
     final placeType = apiDto.placeType;
@@ -19,7 +19,7 @@ class PlacesMapper {
     final matchingText = apiDto.matchingText;
     final matchingPlaceName = apiDto.matchingPlaceName;
 
-    return Feature(
+    return Place(
       id: id,
       type: type,
       placeType: placeType,
@@ -36,7 +36,7 @@ class PlacesMapper {
     );
   }
 
-  List<Feature> fromApiDtoList(List<FeatureDto> dtos) =>
+  List<Place> fromApiDtoList(List<FeatureDto> dtos) =>
       dtos.map((dto) => fromApiDto(dto)).toList();
 
   Properties _propertiesFromApiDto(PropertiesDto dto) {

@@ -1,18 +1,4 @@
-// class Places {
-//   final String type;
-//   final List<String> query;
-//   final List<Feature> features;
-//   final String attribution;
-
-//   Places({
-//     required this.type,
-//     required this.query,
-//     required this.features,
-//     required this.attribution,
-//   });
-// }
-
-class Feature {
+class Place {
   final String id;
   final String type;
   final List<String> placeType;
@@ -29,7 +15,7 @@ class Feature {
   final String matchingText;
   final String matchingPlaceName;
 
-  Feature({
+  Place({
     required this.id,
     required this.type,
     required this.placeType,
