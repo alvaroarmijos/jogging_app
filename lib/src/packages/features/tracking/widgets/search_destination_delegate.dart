@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
 import 'package:tracking_app/src/packages/features/tracking/models/search_result.dart';
+import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
 
 class SerchDestinationDelegate extends SearchDelegate<SearchResult> {
   SerchDestinationDelegate()
@@ -27,7 +30,42 @@ class SerchDestinationDelegate extends SearchDelegate<SearchResult> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return const Text('buildResults');
+    final lastKnownLocation =
+        context.read<LocationBloc>().state.lastKownLocation!;
+    context.read<SearchBloc>().add(GetPlacesEvent(lastKnownLocation, query));
+
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        final places = state.places;
+
+        return ListView.separated(
+          itemBuilder: (context, index) {
+            final place = places[index];
+            return ListTile(
+              title: Text(place.text),
+              subtitle: Text(place.placeName),
+              leading: Icon(
+                Icons.place_outlined,
+                color: TrackingColors.primary,
+              ),
+              onTap: () {
+                final result = SearchResult(
+                  cancel: false,
+                  manual: false,
+                  position: LatLng(place.center[1], place.center[0]),
+                  name: place.text,
+                  description: place.placeName,
+                );
+
+                close(context, result);
+              },
+            );
+          },
+          separatorBuilder: (context, index) => const Divider(),
+          itemCount: places.length,
+        );
+      },
+    );
   }
 
   @override

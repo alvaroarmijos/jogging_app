@@ -11,12 +11,15 @@ part 'search_state.dart';
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc(
     this._getRoutes,
+    this._searchPlaces,
   ) : super(const SearchState()) {
     on<ShowManualMarkerEvent>(_onShowManualMarkerEvent);
     on<GetRouteEvent>(_onGetRouteEvent);
+    on<GetPlacesEvent>(_onGetPlacesEvent);
   }
 
   final GetRoutes _getRoutes;
+  final SearchPlaces _searchPlaces;
 
   FutureOr<void> _onShowManualMarkerEvent(
     ShowManualMarkerEvent event,
@@ -34,6 +37,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       _getRoutes(event.start, event.end),
       onData: (data) =>
           state.copyWith(traffic: data, showManulMarker: false, loading: false),
+    );
+  }
+
+  FutureOr<void> _onGetPlacesEvent(
+    GetPlacesEvent event,
+    Emitter<SearchState> emit,
+  ) {
+    return emit.forEach(
+      _searchPlaces(event.proximity, event.query),
+      onData: (data) => state.copyWith(places: data),
     );
   }
 }
