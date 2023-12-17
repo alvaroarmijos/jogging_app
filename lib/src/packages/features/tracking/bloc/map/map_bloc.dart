@@ -118,6 +118,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     //custom Marker
     final startImageMarker = await getAssetImageMarker();
+    final endImageMarker = await getNetworkImageMarker();
 
     final startMarker = Marker(
       markerId: const MarkerId('start'),
@@ -132,6 +133,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     final endmarker = Marker(
       markerId: const MarkerId('end'),
       position: traffic.points.last,
+      icon: endImageMarker,
       infoWindow: InfoWindow(
         title: endPlace?.text ?? 'Fin',
         snippet: endPlace?.placeName ?? 'Este es el punto de final de mi ruta',
