@@ -116,9 +116,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     double walkingDuration = (traffic.duration / 60).floorToDouble();
 
+    //custom Marker
+    final startImageMarker = await getAssetImageMarker();
+
     final startMarker = Marker(
       markerId: const MarkerId('start'),
       position: traffic.points.first,
+      icon: startImageMarker,
       infoWindow: InfoWindow(
         title: 'Inicio',
         snippet: 'kms: $kms, duration: $walkingDuration',
