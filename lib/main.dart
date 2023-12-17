@@ -16,7 +16,7 @@ void main() async {
         BlocProvider(create: (context) => di.sl<GpsPermissionsBloc>()),
         BlocProvider(create: (context) => di.sl<LocationBloc>()),
         BlocProvider(create: (context) => di.sl<SearchBloc>()),
-        //It's importante register the LocationBloc in this way
+        //It's important register the LocationBloc in this way
         //to track the user location and move the camera
         BlocProvider(
             create: (context) => MapBloc(
