@@ -1,6 +1,8 @@
 export 'lib/src/helpers/custom_image_marker.dart';
 export 'lib/src/helpers/widgets_to_marker.dart';
+export 'lib/src/markers/end_marker.dart';
 export 'lib/src/markers/end_uber_marker.dart';
+export 'lib/src/markers/start_marker.dart';
 export 'lib/src/markers/start_uber_marker.dart';
 export 'lib/src/res/colors.dart';
 export 'lib/src/res/dimens.dart';

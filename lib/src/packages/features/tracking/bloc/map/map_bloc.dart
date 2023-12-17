@@ -121,16 +121,17 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     // final startImageMarker = await getAssetImageMarker();
     // final endImageMarker = await getNetworkImageMarker();
 
-    final startImageMarker =
-        await getStartCustomMarker(walkingDuration, endPlace?.placeName ?? "");
+    final startImageMarker = await getCustomMarker(
+        "$walkingDuration min / ${kms.toInt()} kms",
+        start: true);
     final endImageMarker =
-        await getEndCustomMarker(kms.toInt(), endPlace?.text ?? "");
+        await getCustomMarker(endPlace?.text ?? "", start: false);
 
     final startMarker = Marker(
       markerId: const MarkerId('start'),
       position: traffic.points.first,
       icon: startImageMarker,
-      anchor: const Offset(0.05, 1),
+      anchor: const Offset(0.92, 0.9),
       // infoWindow: InfoWindow(
       //   title: 'Inicio',
       //   snippet: 'kms: $kms, duration: $walkingDuration',
