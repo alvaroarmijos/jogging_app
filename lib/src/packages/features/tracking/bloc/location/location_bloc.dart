@@ -38,8 +38,12 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     return emit.onEach(
       _getPositionStream(),
       onData: (data) {
-        add(NewUserLocationEvent(
-            LatLng(data.latitude, data.longitude), data.speed));
+        add(
+          NewUserLocationEvent(
+            LatLng(data.latitude, data.longitude),
+            data.speed,
+          ),
+        );
       },
     );
   }
@@ -48,11 +52,24 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     NewUserLocationEvent event,
     Emitter<LocationState> emit,
   ) {
+    final myLocationHistory = [...state.myLocationHistory, event.newLocation];
+
+    double currentDistance = 0;
+    if (state.myLocationHistory.length > 1) {
+      currentDistance = Geolocator.distanceBetween(
+            myLocationHistory[myLocationHistory.length - 2].latitude,
+            myLocationHistory[myLocationHistory.length - 2].longitude,
+            myLocationHistory.last.latitude,
+            myLocationHistory.last.longitude,
+          ) /
+          1000;
+    }
     emit(
       state.copyWith(
         lastKownLocation: event.newLocation,
-        myLocationHistory: [...state.myLocationHistory, event.newLocation],
+        myLocationHistory: myLocationHistory,
         speed: event.speed,
+        distance: state.distance + currentDistance,
       ),
     );
   }
