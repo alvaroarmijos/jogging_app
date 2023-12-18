@@ -104,7 +104,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void drawRoutePolyline(Traffic traffic, {Place? endPlace}) async {
     final myRoute = Polyline(
       polylineId: const PolylineId('route'),
-      color: TrackingColors.primary,
+      color: Colors.black,
       width: 5,
       points: traffic.points,
       startCap: Cap.roundCap,
@@ -122,7 +122,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     // final endImageMarker = await getNetworkImageMarker();
 
     final startImageMarker = await getCustomMarker(
-        "$walkingDuration min / ${kms.toInt()} kms",
+        "$walkingDuration min / ${kms.toInt()} km",
         start: true);
     final endImageMarker =
         await getCustomMarker(endPlace?.text ?? "", start: false);

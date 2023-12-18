@@ -20,12 +20,17 @@ class TrackingThemes {
     ),
   );
 
+  static final dividerThemeData = DividerThemeData(
+    color: TrackingColors.primary.withOpacity(0.2),
+  );
+
   static ThemeData get light {
     return ThemeData.from(
       colorScheme: _colorSchemeLight,
       useMaterial3: true,
     ).copyWith(
       elevatedButtonTheme: elevatedButtonTheme,
+      dividerTheme: dividerThemeData,
     );
   }
 }
