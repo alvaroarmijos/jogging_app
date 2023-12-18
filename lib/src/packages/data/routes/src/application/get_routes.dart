@@ -1,12 +1,12 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:tracking_app/src/packages/data/routes/src/domain/traffic/traffic.dart';
-import 'package:tracking_app/src/packages/data/routes/src/domain/traffic/traffic_service.dart';
+import 'package:tracking_app/src/packages/data/routes/src/domain/directions/directions.dart';
+import 'package:tracking_app/src/packages/data/routes/src/domain/directions/directions_service.dart';
 
 class GetRoutes {
-  GetRoutes(this._trafficService);
+  GetRoutes(this._directionsService);
 
-  final TrafficService _trafficService;
+  final DirectionsService _directionsService;
 
-  Stream<Traffic> call(LatLng start, LatLng end) =>
-      _trafficService.getRouteByCoordinates(start, end);
+  Stream<Directions> call(LatLng start, LatLng end) =>
+      _directionsService.getRouteByCoordinates(start, end);
 }

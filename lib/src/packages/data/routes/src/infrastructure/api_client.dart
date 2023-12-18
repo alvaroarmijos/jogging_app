@@ -15,14 +15,14 @@ class RoutesApiClient {
   final _baseTrafficUrl = 'https://api.mapbox.com/directions/v5/mapbox';
   final _basePlacesUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places';
 
-  Future<TrafficDto> getCoorsStartToEnd(LatLng start, LatLng end) async {
+  Future<DirectionsDto> getCoorsStartToEnd(LatLng start, LatLng end) async {
     final coorsString =
         "${start.longitude},${start.latitude};${end.longitude},${end.latitude}";
     final url = "$_baseTrafficUrl/walking/$coorsString";
 
     final resp = await _dioTraffic.get(url);
 
-    final data = TrafficDto.fromMap(resp.data);
+    final data = DirectionsDto.fromMap(resp.data);
 
     return data;
   }

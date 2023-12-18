@@ -39,9 +39,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     emit(state.copyWith(loading: true));
     return emit.forEach(
       Rx.combineLatest2(_getRoutes(event.start, event.end),
-          _getPlace(event.end), (traffic, place) => (traffic, place)),
+          _getPlace(event.end), (directions, place) => (directions, place)),
       onData: (data) => state.copyWith(
-          traffic: data.$1,
+          directions: data.$1,
           endPlace: data.$2,
           showManulMarker: false,
           loading: false),

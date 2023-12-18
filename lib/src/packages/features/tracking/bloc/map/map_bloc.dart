@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +34,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     });
 
     searchStateSubscription = searchBloc.stream.listen((searchState) {
-      if (searchState.traffic != null) {
-        drawRoutePolyline(searchState.traffic!, endPlace: searchState.endPlace);
+      if (searchState.directions != null) {
+        drawRoutePolyline(searchState.directions!,
+            endPlace: searchState.endPlace);
       }
     });
   }
@@ -74,6 +76,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       startCap: Cap.roundCap,
       endCap: Cap.roundCap,
       points: event.userLocations,
+      patterns: [
+        PatternItem.dot,
+        PatternItem.gap(8),
+      ],
     );
 
     final currentPolylines = Map<String, Polyline>.from(state.polylines);
@@ -101,37 +107,50 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     _mapController?.animateCamera(cameraUpdate);
   }
 
-  void drawRoutePolyline(Traffic traffic, {Place? endPlace}) async {
+  void drawRoutePolyline(Directions directions, {Place? endPlace}) async {
     final myRoute = Polyline(
       polylineId: const PolylineId('route'),
-      color: TrackingColors.primary,
+      color: Colors.black,
       width: 5,
-      points: traffic.points,
+      points: directions.points,
       startCap: Cap.roundCap,
       endCap: Cap.roundCap,
     );
 
-    double kms = traffic.distance / 1000;
+    double kms = directions.distance / 1000;
     kms = (kms * 100).floorToDouble();
     kms /= 100;
 
-    int walkingDuration = (traffic.duration / 60).floorToDouble().toInt();
+    int walkingDuration = (directions.duration / 60).floorToDouble().toInt();
 
     //custom Marker from asset and network
     // final startImageMarker = await getAssetImageMarker();
     // final endImageMarker = await getNetworkImageMarker();
 
-    final startImageMarker = await getCustomMarker(
-        "$walkingDuration min / ${kms.toInt()} kms",
-        start: true);
-    final endImageMarker =
-        await getCustomMarker(endPlace?.text ?? "", start: false);
+    late final BitmapDescriptor startImageMarker;
+    late final BitmapDescriptor endImageMarker;
+
+    if (Platform.isAndroid) {
+      //Cabify markers
+      startImageMarker = await getCustomMarker(
+          "$walkingDuration min / ${kms.toInt()} km",
+          start: true);
+      endImageMarker =
+          await getCustomMarker(endPlace?.text ?? "", start: false);
+    } else {
+      //Uber markers
+      startImageMarker =
+          await getStartCustomMarker(walkingDuration, endPlace?.text ?? "");
+      endImageMarker =
+          await getEndCustomMarker(kms.toInt(), endPlace?.placeName ?? "");
+    }
 
     final startMarker = Marker(
       markerId: const MarkerId('start'),
-      position: traffic.points.first,
+      position: directions.points.first,
       icon: startImageMarker,
-      anchor: const Offset(0.92, 0.9),
+      anchor:
+          Platform.isAndroid ? const Offset(0.92, 0.9) : const Offset(0.1, 0.9),
       // infoWindow: InfoWindow(
       //   title: 'Inicio',
       //   snippet: 'kms: $kms, duration: $walkingDuration',
@@ -140,7 +159,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     final endmarker = Marker(
       markerId: const MarkerId('end'),
-      position: traffic.points.last,
+      position: directions.points.last,
       icon: endImageMarker,
       // infoWindow: InfoWindow(
       //   title: endPlace?.text ?? 'Fin',

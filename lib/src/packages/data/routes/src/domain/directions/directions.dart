@@ -1,7 +1,7 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Traffic {
-  Traffic({
+class Directions {
+  Directions({
     required this.points,
     required this.duration,
     required this.distance,

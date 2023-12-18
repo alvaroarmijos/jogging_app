@@ -1,25 +1,24 @@
 import 'dart:convert';
 
-/// Traffic
-class TrafficDto {
+class DirectionsDto {
   final List<RouteDto> routes;
   final List<WaypointDto> waypoints;
   final String code;
   final String uuid;
 
-  TrafficDto({
+  DirectionsDto({
     required this.routes,
     required this.waypoints,
     required this.code,
     required this.uuid,
   });
 
-  factory TrafficDto.fromJson(String str) =>
-      TrafficDto.fromMap(json.decode(str));
+  factory DirectionsDto.fromJson(String str) =>
+      DirectionsDto.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory TrafficDto.fromMap(Map<String, dynamic> json) => TrafficDto(
+  factory DirectionsDto.fromMap(Map<String, dynamic> json) => DirectionsDto(
         routes:
             List<RouteDto>.from(json["routes"].map((x) => RouteDto.fromMap(x))),
         waypoints: List<WaypointDto>.from(
