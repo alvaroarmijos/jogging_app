@@ -55,19 +55,22 @@ class SearchIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: Colors.white,
-      child: IconButton(
-        onPressed: () {
-          showSearch(context: context, delegate: SerchDestinationDelegate())
-              .then((result) {
-            if (result == null) return;
-            onSearchResult(context, result);
-          });
-        },
-        icon: Icon(
-          Icons.search,
-          color: TrackingColors.primary,
+    return Padding(
+      padding: const EdgeInsets.only(right: TrackingDimens.dimen_4),
+      child: CircleAvatar(
+        backgroundColor: Colors.white,
+        child: IconButton(
+          onPressed: () {
+            showSearch(context: context, delegate: SerchDestinationDelegate())
+                .then((result) {
+              if (result == null) return;
+              onSearchResult(context, result);
+            });
+          },
+          icon: Icon(
+            Icons.search,
+            color: TrackingColors.primary,
+          ),
         ),
       ),
     );
