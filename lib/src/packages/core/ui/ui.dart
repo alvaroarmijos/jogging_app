@@ -1,4 +1,5 @@
 export 'lib/src/helpers/custom_image_marker.dart';
+export 'lib/src/helpers/lat_lng_bounds.dart';
 export 'lib/src/helpers/widgets_to_marker.dart';
 export 'lib/src/markers/end_marker.dart';
 export 'lib/src/markers/end_uber_marker.dart';

@@ -101,6 +101,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     _mapController?.animateCamera(cameraUpdate);
   }
 
+  void centerCameraPoints(List<LatLng> points) {
+    _mapController?.animateCamera(
+        CameraUpdate.newLatLngBounds(getLatLngBounds(points), 50));
+  }
+
   void drawRoutePolyline(Traffic traffic, {Place? endPlace}) async {
     final myRoute = Polyline(
       polylineId: const PolylineId('route'),
@@ -158,6 +163,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     // Future.delayed(const Duration(milliseconds: 300)).then(
     //   (value) => _mapController?.showMarkerInfoWindow(const MarkerId('start')),
     // );
+
+    centerCameraPoints(traffic.points);
 
     add(AddPolylineEvent(currentPolylines, currentMarkers));
   }
