@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tracking_app/app/navigator/app_navigator.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
-import 'package:tracking_app/src/packages/features/onboarding/pages/information_page.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -17,11 +17,7 @@ class OnboardingPage extends StatelessWidget {
               TrackingDrawables.getIconAppDrawable(),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const InformationPage(),
-                  )),
+              onPressed: () => AppNavigator.navigateToInformationPage(context),
               child: const Text('Empezar'),
             ),
           ],
