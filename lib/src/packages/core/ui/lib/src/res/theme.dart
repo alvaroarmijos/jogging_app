@@ -38,6 +38,18 @@ class TrackingThemes {
         TrackingDimens.dimen_20,
       ),
     ),
+    errorBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.red),
+      borderRadius: BorderRadius.circular(
+        TrackingDimens.dimen_20,
+      ),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.red),
+      borderRadius: BorderRadius.circular(
+        TrackingDimens.dimen_20,
+      ),
+    ),
   );
 
   static ThemeData get light {

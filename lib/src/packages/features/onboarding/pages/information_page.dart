@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/features/onboarding/onboarding.dart';
 
 class InformationPage extends StatefulWidget {
   const InformationPage({super.key});
@@ -12,6 +14,14 @@ class _InformationPageState extends State<InformationPage> {
   final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _ageFocusNode = FocusNode();
   final FocusNode _weightFocusNode = FocusNode();
+
+  late final OnboardingBloc bloc;
+
+  @override
+  void initState() {
+    bloc = context.read<OnboardingBloc>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,41 +49,64 @@ class _InformationPageState extends State<InformationPage> {
               TextFormField(
                 focusNode: _nameFocusNode,
                 decoration: const InputDecoration(
+                  label: Text("Nombre"),
                   hintText: "Nombre",
                 ),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.text,
                 textCapitalization: TextCapitalization.words,
+                onChanged: (value) => bloc.add(ChangeNameEvent(value)),
               ),
               const SizedBox(
                 height: TrackingDimens.dimen_20,
               ),
-              TextFormField(
-                focusNode: _ageFocusNode,
-                decoration: const InputDecoration(
-                  hintText: "Edad",
-                ),
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.number,
+              BlocBuilder<OnboardingBloc, OnboardingState>(
+                builder: (context, state) {
+                  return TextFormField(
+                    focusNode: _ageFocusNode,
+                    decoration: InputDecoration(
+                      label: const Text("Edad"),
+                      hintText: "Edad",
+                      errorText:
+                          state.showErrorAge ? "Ingrese un valor válido" : null,
+                    ),
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) => bloc.add(ChangeAgeEvent(value)),
+                  );
+                },
               ),
               const SizedBox(
                 height: TrackingDimens.dimen_20,
               ),
-              TextFormField(
-                focusNode: _weightFocusNode,
-                decoration: const InputDecoration(
-                  hintText: "Peso (kg)",
-                ),
-                textInputAction: TextInputAction.done,
-                keyboardType: TextInputType.number,
+              BlocBuilder<OnboardingBloc, OnboardingState>(
+                builder: (context, state) {
+                  return TextFormField(
+                    focusNode: _weightFocusNode,
+                    decoration: InputDecoration(
+                      label: const Text("Peso (kg)"),
+                      hintText: "Peso (kg)",
+                      errorText: state.showErrorWeight
+                          ? "Ingrese un valor válido"
+                          : null,
+                    ),
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) => bloc.add(ChangeWeightEvent(value)),
+                  );
+                },
               ),
             ],
           ),
-          const Align(
+          Align(
             alignment: Alignment.bottomCenter,
-            child: ElevatedButton(
-              onPressed: null,
-              child: Text("Continuar"),
+            child: BlocBuilder<OnboardingBloc, OnboardingState>(
+              builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: state.isNextButtonEnabled ? () {} : null,
+                  child: const Text("Continuar"),
+                );
+              },
             ),
           )
         ],

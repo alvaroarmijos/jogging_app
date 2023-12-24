@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:tracking_app/src/packages/core/utility/utility.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
 import 'package:tracking_app/src/packages/data/routes/routes.dart';
 import 'package:tracking_app/src/packages/data/routes/src/domain/places/places_service.dart';
@@ -8,12 +9,17 @@ import 'package:tracking_app/src/packages/data/routes/src/infrastructure/places/
 import 'package:tracking_app/src/packages/data/routes/src/infrastructure/traffic/traffic_mapper.dart';
 import 'package:tracking_app/src/packages/data/routes/src/infrastructure/traffic/traffic_service_impl.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissions.dart';
+import 'package:tracking_app/src/packages/features/onboarding/bloc/onboarding_bloc.dart';
 
 import '../../src/packages/features/tracking/tracking.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  ///Core
+  ///Utility
+  sl.registerFactory(() => InputConverter());
+
   /// Data
 
   /// Device
@@ -54,6 +60,10 @@ Future<void> init() async {
       sl(),
     ),
   );
+
+  /// Onboarding
+  /// //Bloc
+  sl.registerFactory(() => OnboardingBloc(sl<InputConverter>()));
 
   /// Tracking
   // Bloc
