@@ -103,7 +103,9 @@ class _InformationPageState extends State<InformationPage> {
             child: BlocBuilder<OnboardingBloc, OnboardingState>(
               builder: (context, state) {
                 return ElevatedButton(
-                  onPressed: state.isNextButtonEnabled ? () {} : null,
+                  onPressed: state.isNextButtonEnabled
+                      ? () => bloc.add(const NextButtonPressedEvent())
+                      : null,
                   child: const Text("Continuar"),
                 );
               },

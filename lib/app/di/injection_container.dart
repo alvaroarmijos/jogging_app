@@ -1,5 +1,9 @@
 import 'package:get_it/get_it.dart';
+import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:tracking_app/src/packages/core/utility/utility.dart';
+import 'package:tracking_app/src/packages/data/account/src/application/save_user.dart';
+import 'package:tracking_app/src/packages/data/account/src/domain/user/auth_repository.dart';
+import 'package:tracking_app/src/packages/data/account/src/infrastructure/user/auth_service_impl.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
 import 'package:tracking_app/src/packages/data/routes/routes.dart';
 import 'package:tracking_app/src/packages/data/routes/src/domain/places/places_service.dart';
@@ -33,6 +37,15 @@ Future<void> init() async {
   sl.registerLazySingleton(() => const GetCurrentPosition());
   sl.registerLazySingleton(() => const GetPositionStream());
 
+  /// Account
+  ///
+  /// UseCases
+  sl.registerLazySingleton(() => SaveUser(sl()));
+
+  /// Infrastructure
+  sl.registerLazySingleton(() => AuthCache(sl()));
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
+
   /// Routes
   ///
   // Application
@@ -63,10 +76,13 @@ Future<void> init() async {
 
   /// Onboarding
   /// //Bloc
-  sl.registerFactory(() => OnboardingBloc(sl<InputConverter>()));
+  sl.registerFactory(() => OnboardingBloc(sl(), sl()));
 
   /// Tracking
   // Bloc
   sl.registerFactory(() => LocationBloc(sl(), sl()));
   sl.registerFactory(() => SearchBloc(sl(), sl(), sl()));
+
+  //External
+  sl.registerLazySingleton(() => RxSharedPreferences.getInstance());
 }
