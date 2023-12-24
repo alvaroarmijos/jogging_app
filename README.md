@@ -1,16 +1,49 @@
-# tracking_app
+# Jogging App
 
-A new Flutter project.
+This Flutter application is designed for jogging enthusiasts, offering a range of features to enhance the running experience.
 
-## Getting Started
+## Key Features:
 
-This project is a starting point for a Flutter application.
+1. Google Maps Integration
 
-A few resources to get you started if this is your first Flutter project:
+Seamless integration of Google Maps for an interactive and detailed view of jogging routes.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+2. Location Tracking and Route Management
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Real-time tracking of user location during jogging sessions.
+Save and display jogging routes with the ability to show/hide route polylines.
+
+3. Autofocus Camera
+
+Autofocus on the map's camera with each new location update, providing a smooth and dynamic experience.
+
+4. Fitness Statistics
+
+Calculate total distance covered, estimated calories burned (based on distance), and running speed.
+
+5. Route Navigation
+
+Navigate to a specific location set either on the map or through the search functionality.
+Utilizes Mapbox API for route information and nearby places, offering a free alternative with a limit of 100,000 monthly requests.
+
+6. Custom Map Markers
+
+Personalized markers on the map for enhanced visual representation.
+
+7. Map Styling Configuration
+
+Customize the map's appearance according to user preferences.
+
+
+## Screenshots
+<p>
+    <img src="./docs/android.gif" width="200"/ hspace="5"> 
+    <img src="./docs/android1.png" width="200"/ hspace="5"> 
+    <img src="./docs/android2.png" width="200"/ hspace="5"> 
+</p>
+
+<p>
+<img src="./docs/ios.gif" width="200"/ hspace="5">
+<img src="./docs/ios1.png" width="200"/ hspace="5">
+<img src="./docs/ios2.png" width="200"/ hspace="5">
+</p>
