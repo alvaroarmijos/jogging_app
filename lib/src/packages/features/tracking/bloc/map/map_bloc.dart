@@ -74,6 +74,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       startCap: Cap.roundCap,
       endCap: Cap.roundCap,
       points: event.userLocations,
+      patterns: [
+        PatternItem.dot,
+        PatternItem.gap(8),
+      ],
     );
 
     final currentPolylines = Map<String, Polyline>.from(state.polylines);
