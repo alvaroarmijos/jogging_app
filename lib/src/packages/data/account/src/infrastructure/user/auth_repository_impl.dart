@@ -3,13 +3,18 @@ import 'dart:convert';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:tracking_app/src/packages/data/account/src/domain/user/auth_repository.dart';
 import 'package:tracking_app/src/packages/data/account/src/infrastructure/cache_dtos.dart';
+import 'package:tracking_app/src/packages/data/account/src/infrastructure/user/user_mapper.dart';
 
 import '../../domain/user/user.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
-  AuthRepositoryImpl(this._authCache);
+  AuthRepositoryImpl(
+    this._authCache,
+    this._mapper,
+  );
 
   final AuthCache _authCache;
+  final UserMapper _mapper;
 
   @override
   Future<void> saveUser(User user) =>
@@ -18,6 +23,10 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Stream<bool> checkUser() =>
       _authCache.snapshots.map((userCacheDto) => userCacheDto != null);
+
+  @override
+  Stream<User?> get currentUser => _authCache.snapshots.map((userCacheDto) =>
+      userCacheDto != null ? _mapper.fromCacheDto(userCacheDto) : null);
 }
 
 class AuthCache {

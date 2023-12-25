@@ -4,4 +4,6 @@ abstract class AuthRepository {
   Future<void> saveUser(User user);
 
   Stream<bool> checkUser();
+
+  Stream<User?> get currentUser;
 }

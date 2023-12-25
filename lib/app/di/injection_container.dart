@@ -5,6 +5,7 @@ import 'package:tracking_app/src/packages/core/utility/utility.dart';
 import 'package:tracking_app/src/packages/data/account/account.dart';
 import 'package:tracking_app/src/packages/data/account/src/domain/user/auth_repository.dart';
 import 'package:tracking_app/src/packages/data/account/src/infrastructure/user/auth_repository_impl.dart';
+import 'package:tracking_app/src/packages/data/account/src/infrastructure/user/user_mapper.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
 import 'package:tracking_app/src/packages/data/routes/routes.dart';
 import 'package:tracking_app/src/packages/data/routes/src/domain/places/places_service.dart';
@@ -47,10 +48,13 @@ Future<void> init() async {
   /// UseCases
   sl.registerLazySingleton(() => SaveUser(sl()));
   sl.registerLazySingleton(() => CheckUserExists(sl()));
+  sl.registerLazySingleton(() => GetCurrentUser(sl()));
 
   /// Infrastructure
   sl.registerLazySingleton(() => AuthCache(sl()));
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
+  sl.registerLazySingleton(() => const UserMapper());
+  sl.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(sl(), sl()));
 
   /// Routes
   ///
@@ -86,7 +90,7 @@ Future<void> init() async {
 
   /// Tracking
   // Bloc
-  sl.registerFactory(() => LocationBloc(sl(), sl()));
+  sl.registerFactory(() => LocationBloc(sl(), sl(), sl()));
   sl.registerFactory(() => SearchBloc(sl(), sl(), sl()));
 
   //External
