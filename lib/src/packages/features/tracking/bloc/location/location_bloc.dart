@@ -4,6 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' show LatLng;
+import 'package:rxdart/rxdart.dart';
+import 'package:tracking_app/src/packages/data/account/account.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
 
 part 'location_event.dart';
@@ -13,6 +15,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   LocationBloc(
     this._getCurrentPosition,
     this._getPositionStream,
+    this._getCurrentUser,
   ) : super(const LocationState()) {
     on<GetCurrentPositionEvent>(_onGetCurrentPositionEvent);
     on<StartTrackingUserEvent>(_onStartTrackingUserEvent);
@@ -21,6 +24,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   final GetCurrentPosition _getCurrentPosition;
   final GetPositionStream _getPositionStream;
+  final GetCurrentUser _getCurrentUser;
 
   FutureOr<void> _onGetCurrentPositionEvent(
     GetCurrentPositionEvent event,
@@ -36,14 +40,18 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     Emitter<LocationState> emit,
   ) {
     return emit.onEach(
-      _getPositionStream(),
+      Rx.combineLatest2(
+        _getPositionStream(),
+        _getCurrentUser(),
+        (position, user) => (position, user),
+      ),
       onData: (data) {
-        add(
-          NewUserLocationEvent(
-            LatLng(data.latitude, data.longitude),
-            data.speed,
-          ),
-        );
+        if (data.$2 != null) {
+          add(
+            NewUserLocationEvent(LatLng(data.$1.latitude, data.$1.longitude),
+                data.$1.speed, data.$2!.weight),
+          );
+        }
       },
     );
   }
@@ -70,6 +78,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         myLocationHistory: myLocationHistory,
         speed: event.speed,
         distance: state.distance + currentDistance,
+        weight: event.weight,
       ),
     );
   }
