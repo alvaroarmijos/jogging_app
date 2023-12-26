@@ -13,20 +13,8 @@ void main() async {
   await di.init();
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(
-            create: (context) =>
-                di.sl<AppBloc>()..add(const CheckExistUserEvent())),
-        BlocProvider(create: (context) => di.sl<GpsPermissionsBloc>()),
-        BlocProvider(create: (context) => di.sl<LocationBloc>()),
-        BlocProvider(create: (context) => di.sl<SearchBloc>()),
-        //It's important register the LocationBloc in this way
-        //to track the user location and move the camera
-        BlocProvider(
-            create: (context) => MapBloc(
-                context.read<LocationBloc>(), context.read<SearchBloc>())),
-      ],
+    BlocProvider(
+      create: (context) => di.sl<AppBloc>()..add(const CheckExistUserEvent()),
       child: const MyApp(),
     ),
   );
@@ -44,7 +32,23 @@ class MyApp extends StatelessWidget {
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           return state.userExists
-              ? const LoadingPage()
+              ? MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                        create: (context) => di.sl<GpsPermissionsBloc>()),
+                    BlocProvider(create: (context) => di.sl<LocationBloc>()),
+                    BlocProvider(create: (context) => di.sl<SearchBloc>()),
+                    //It's important register the LocationBloc in this way
+                    //to track the user location and move the camera
+                    BlocProvider(
+                      create: (context) => MapBloc(
+                        context.read<LocationBloc>(),
+                        context.read<SearchBloc>(),
+                      ),
+                    ),
+                  ],
+                  child: const LoadingPage(),
+                )
               : const OnboardingNavigator();
         },
       ),
