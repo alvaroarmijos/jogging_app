@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -130,27 +131,30 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     // final startImageMarker = await getAssetImageMarker();
     // final endImageMarker = await getNetworkImageMarker();
 
-    //Cabify markers
-    final startImageMarker = await getCustomMarker(
-        "$walkingDuration min / ${kms.toInt()} km",
-        start: true);
-    final endImageMarker =
-        await getCustomMarker(endPlace?.text ?? "", start: false);
+    late final BitmapDescriptor startImageMarker;
+    late final BitmapDescriptor endImageMarker;
 
-    //Uber markers
-    // final startImageMarker =
-    //     await getStartCustomMarker(walkingDuration, endPlace?.text ?? "");
-    // final endImageMarker =
-    //     await getEndCustomMarker(kms.toInt(), endPlace?.placeName ?? "");
+    if (Platform.isAndroid) {
+      //Cabify markers
+      startImageMarker = await getCustomMarker(
+          "$walkingDuration min / ${kms.toInt()} km",
+          start: true);
+      endImageMarker =
+          await getCustomMarker(endPlace?.text ?? "", start: false);
+    } else {
+      //Uber markers
+      startImageMarker =
+          await getStartCustomMarker(walkingDuration, endPlace?.text ?? "");
+      endImageMarker =
+          await getEndCustomMarker(kms.toInt(), endPlace?.placeName ?? "");
+    }
 
     final startMarker = Marker(
       markerId: const MarkerId('start'),
       position: traffic.points.first,
       icon: startImageMarker,
-      //cabify offset
-      anchor: const Offset(0.92, 0.9),
-      //uber offset
-      // anchor: const Offset(0.1, 0.9),
+      anchor:
+          Platform.isAndroid ? const Offset(0.92, 0.9) : const Offset(0.1, 0.9),
       // infoWindow: InfoWindow(
       //   title: 'Inicio',
       //   snippet: 'kms: $kms, duration: $walkingDuration',

@@ -11,4 +11,6 @@ class TrackingDrawables {
   static String getVelocityDrawable() => "assets/icons/velocity_icon.png";
 
   static String getFireDrawable() => "assets/icons/fire_icon.png";
+
+  static String getIconAppDrawable() => "assets/icons/icon_app.png";
 }

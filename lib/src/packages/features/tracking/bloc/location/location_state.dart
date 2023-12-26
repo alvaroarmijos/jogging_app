@@ -5,6 +5,7 @@ final class LocationState extends Equatable {
     this.lastKownLocation,
     this.speed = 0.0,
     this.distance = 0.0,
+    this.weight = 70,
     myLocationHistory,
   }) : myLocationHistory = myLocationHistory ?? const [];
 
@@ -12,11 +13,12 @@ final class LocationState extends Equatable {
   final List<LatLng> myLocationHistory;
   final double speed;
   final double distance;
+  final double weight;
 
   double get speedInKm => speed * 3.6;
 
-  //This is an estimate, assuming a 70kg person burns 67.9 kcal per kilometre.
-  double get kcal => distance * 67.9;
+  //This is an estimate,
+  double get kcal => 1.03 * distance * weight;
 
   LocationState copyWith({
     LatLng? lastKownLocation,
@@ -24,15 +26,17 @@ final class LocationState extends Equatable {
     bool? isFollowingUser,
     double? speed,
     double? distance,
+    double? weight,
   }) =>
       LocationState(
         lastKownLocation: lastKownLocation ?? this.lastKownLocation,
         myLocationHistory: myLocationHistory ?? this.myLocationHistory,
         speed: speed ?? this.speed,
         distance: distance ?? this.distance,
+        weight: weight ?? this.weight,
       );
 
   @override
   List<Object?> get props =>
-      [lastKownLocation, myLocationHistory, speed, distance];
+      [lastKownLocation, myLocationHistory, speed, distance, weight];
 }

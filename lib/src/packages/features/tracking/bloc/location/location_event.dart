@@ -19,11 +19,13 @@ final class NewUserLocationEvent extends LocationEvent {
   const NewUserLocationEvent(
     this.newLocation,
     this.speed,
+    this.weight,
   );
 
   final LatLng newLocation;
   final double speed;
+  final double weight;
 
   @override
-  List<Object> get props => [newLocation, speed];
+  List<Object> get props => [newLocation, speed, weight];
 }
