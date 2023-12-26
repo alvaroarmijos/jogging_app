@@ -42,7 +42,7 @@ class _InformationPageState extends State<InformationPage> {
                 height: TrackingDimens.dimen_12,
               ),
               const Text(
-                  "Ingresa la siguiente información para poder calcular la cantidad de calorias que quemas en cada entrenamiento."),
+                  "La siguiente información es necesaria para calcular la cantidad de calorías quemadas durante cada sesión de entrenamiento."),
               const SizedBox(
                 height: TrackingDimens.dimen_20,
               ),
@@ -93,6 +93,9 @@ class _InformationPageState extends State<InformationPage> {
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.number,
                     onChanged: (value) => bloc.add(ChangeWeightEvent(value)),
+                    onFieldSubmitted: (_) => state.isNextButtonEnabled
+                        ? bloc.add(const NextButtonPressedEvent())
+                        : null,
                   );
                 },
               ),

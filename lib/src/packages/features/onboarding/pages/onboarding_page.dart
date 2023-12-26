@@ -7,14 +7,25 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(TrackingDimens.dimen_20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            Text(
+              "Tener buena salud",
+              style: textTheme.titleLarge,
+            ),
             Image.asset(
               TrackingDrawables.getIconAppDrawable(),
+            ),
+            Text(
+              "Estar sano lo es todo, no tener salud no es nada.\nEntonces, ¿por qué no?",
+              style: textTheme.labelLarge,
+              textAlign: TextAlign.center,
             ),
             ElevatedButton(
               onPressed: () => AppNavigator.navigateToInformationPage(context),
