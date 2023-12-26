@@ -36,11 +36,21 @@ Customize the map's appearance according to user preferences.
 
 
 ## Screenshots
+
+**Onboarding:**
+<p>
+    <img src="./docs/onboarding.png" width="200"/ hspace="5"> 
+    <img src="./docs/information.png" width="200"/ hspace="5"> 
+</p>
+
+**Android:**
 <p>
     <img src="./docs/android.gif" width="200"/ hspace="5"> 
     <img src="./docs/android1.png" width="200"/ hspace="5"> 
     <img src="./docs/android2.png" width="200"/ hspace="5"> 
 </p>
+
+**iOS:**
 
 <p>
 <img src="./docs/ios.gif" width="200"/ hspace="5">
