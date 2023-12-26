@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: TrackingThemes.light,
-      title: 'Tracking App',
+      title: 'EELA - Jogging App',
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           return state.userExists

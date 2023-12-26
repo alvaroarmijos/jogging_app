@@ -51,7 +51,6 @@ Customize the map's appearance according to user preferences.
 </p>
 
 **iOS:**
-
 <p>
 <img src="./docs/ios.gif" width="200"/ hspace="5">
 <img src="./docs/ios1.png" width="200"/ hspace="5">
