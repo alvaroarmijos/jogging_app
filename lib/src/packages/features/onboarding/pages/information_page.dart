@@ -105,11 +105,13 @@ class _InformationPageState extends State<InformationPage> {
             alignment: Alignment.bottomCenter,
             child: BlocBuilder<OnboardingBloc, OnboardingState>(
               builder: (context, state) {
-                return ElevatedButton(
-                  onPressed: state.isNextButtonEnabled
-                      ? () => bloc.add(const NextButtonPressedEvent())
-                      : null,
-                  child: const Text("Continuar"),
+                return SafeArea(
+                  child: ElevatedButton(
+                    onPressed: state.isNextButtonEnabled
+                        ? () => bloc.add(const NextButtonPressedEvent())
+                        : null,
+                    child: const Text("Continuar"),
+                  ),
                 );
               },
             ),

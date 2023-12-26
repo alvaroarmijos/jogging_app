@@ -13,8 +13,15 @@ void main() async {
   await di.init();
 
   runApp(
-    BlocProvider(
-      create: (context) => di.sl<AppBloc>()..add(const CheckExistUserEvent()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              di.sl<AppBloc>()..add(const CheckExistUserEvent()),
+        ),
+        BlocProvider(create: (context) => di.sl<SearchBloc>()),
+        BlocProvider(create: (context) => di.sl<LocationBloc>()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -36,8 +43,7 @@ class MyApp extends StatelessWidget {
                   providers: [
                     BlocProvider(
                         create: (context) => di.sl<GpsPermissionsBloc>()),
-                    BlocProvider(create: (context) => di.sl<LocationBloc>()),
-                    BlocProvider(create: (context) => di.sl<SearchBloc>()),
+
                     //It's important register the LocationBloc in this way
                     //to track the user location and move the camera
                     BlocProvider(
