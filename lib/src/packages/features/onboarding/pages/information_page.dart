@@ -12,6 +12,7 @@ class InformationPage extends StatefulWidget {
 
 class _InformationPageState extends State<InformationPage> {
   final FocusNode _nameFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _ageFocusNode = FocusNode();
   final FocusNode _weightFocusNode = FocusNode();
 
@@ -63,6 +64,26 @@ class _InformationPageState extends State<InformationPage> {
               BlocBuilder<OnboardingBloc, OnboardingState>(
                 builder: (context, state) {
                   return TextFormField(
+                    focusNode: _emailFocusNode,
+                    decoration: InputDecoration(
+                      label: const Text("Email"),
+                      hintText: "Email",
+                      errorText: state.showErrorEmail
+                          ? "Ingrese un email válido"
+                          : null,
+                    ),
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (value) => bloc.add(ChangeEmailEvent(value)),
+                  );
+                },
+              ),
+              const SizedBox(
+                height: TrackingDimens.dimen_20,
+              ),
+              BlocBuilder<OnboardingBloc, OnboardingState>(
+                builder: (context, state) {
+                  return TextFormField(
                     focusNode: _ageFocusNode,
                     decoration: InputDecoration(
                       label: const Text("Edad"),
@@ -98,6 +119,9 @@ class _InformationPageState extends State<InformationPage> {
                         : null,
                   );
                 },
+              ),
+              const SizedBox(
+                height: TrackingDimens.dimen_56,
               ),
             ],
           ),
