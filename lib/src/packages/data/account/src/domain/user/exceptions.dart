@@ -11,3 +11,10 @@ final class InvalidWeightException implements Exception {
   @override
   String toString() => 'Invalid weight';
 }
+
+final class InvalidEmailException implements Exception {
+  const InvalidEmailException();
+
+  @override
+  String toString() => 'Invalid email';
+}

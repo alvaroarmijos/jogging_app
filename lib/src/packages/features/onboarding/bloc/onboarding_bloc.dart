@@ -17,6 +17,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     on<ChangeNameEvent>(_onChangeNameEvent);
     on<ChangeAgeEvent>(_onChangeAgeEvent);
     on<ChangeWeightEvent>(_onChangeWeightEvent);
+    on<ChangeEmailEvent>(_onChangeEmailEvent);
     on<NextButtonPressedEvent>(_onNextButtonPressedEvent);
   }
 
@@ -58,7 +59,19 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     NextButtonPressedEvent event,
     Emitter<OnboardingState> emit,
   ) {
-    final user = User(state.name!, state.age!, state.weight!);
+    final user = User(state.name!, state.age!, state.weight!, state.email!);
     _saveUser(user);
+  }
+
+  FutureOr<void> _onChangeEmailEvent(
+    ChangeEmailEvent event,
+    Emitter<OnboardingState> emit,
+  ) {
+    final isValidEmail = _inputConverter.isValidEmail(event.email);
+    if (isValidEmail) {
+      emit(state.copyWith(email: event.email, error: Object));
+    } else {
+      emit(state.copyWith(error: const InvalidEmailException(), email: ''));
+    }
   }
 }

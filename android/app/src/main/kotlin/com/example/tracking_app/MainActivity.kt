@@ -1,4 +1,4 @@
-package com.example.tracking_app
+package com.eela.education.jogging.app
 
 import io.flutter.embedding.android.FlutterActivity
 

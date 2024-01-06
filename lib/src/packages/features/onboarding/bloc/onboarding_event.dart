@@ -25,6 +25,12 @@ final class ChangeWeightEvent extends OnboardingEvent {
   final String weight;
 }
 
+final class ChangeEmailEvent extends OnboardingEvent {
+  const ChangeEmailEvent(this.email);
+
+  final String email;
+}
+
 final class NextButtonPressedEvent extends OnboardingEvent {
   const NextButtonPressedEvent();
 }
