@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tracking_app/src/pages/pages.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissions.dart';
+
+import 'src/packages/core/ui/ui.dart';
 
 void main() => runApp(const MyApp());
 
@@ -9,9 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
+      debugShowCheckedModeBanner: false,
+      theme: TrackingThemes.light,
       title: 'Tracking App',
-      home: const GpsPage(),
+      home: BlocProvider(
+        create: (context) => GpsPermissionsBloc(),
+        child: const GpsPage(),
+      ),
     );
   }
 }
