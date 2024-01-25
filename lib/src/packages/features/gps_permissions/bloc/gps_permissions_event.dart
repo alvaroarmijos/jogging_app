@@ -19,3 +19,11 @@ class GpsAndPermissionsEvent extends GpsPermissionsEvent {
   @override
   List<Object> get props => [isGpsEnabled, isGpsPermissionsGranted];
 }
+
+class GpsInitialStatusEvent extends GpsPermissionsEvent {
+  const GpsInitialStatusEvent();
+}
+
+class ChangeGpsStatusEvent extends GpsPermissionsEvent {
+  const ChangeGpsStatusEvent();
+}
