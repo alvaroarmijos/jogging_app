@@ -21,7 +21,9 @@ class GpsPage extends StatelessWidget {
                 return !state.isGpsEnabled
                     ? const MessageGps()
                     : EnableGps(
-                        onTap: () {},
+                        onTap: () => context
+                            .read<GpsPermissionsBloc>()
+                            .add(const AskGpsAccessEvent()),
                       );
               },
             )),

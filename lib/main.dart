@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tracking_app/src/packages/data/device/application.dart';
+import 'package:tracking_app/src/app/di/di.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissions.dart';
+import 'package:tracking_app/src/pages/loading_page.dart';
 
 import 'src/packages/core/ui/ui.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  await init();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -17,11 +21,8 @@ class MyApp extends StatelessWidget {
       theme: TrackingThemes.light,
       title: 'Tracking App',
       home: BlocProvider(
-        create: (context) => GpsPermissionsBloc(
-          const GpsInitialStatus(),
-          const GpsStatus(),
-        ),
-        child: const GpsPage(),
+        create: (context) => sl<GpsPermissionsBloc>(),
+        child: const LoadingPage(),
       ),
     );
   }

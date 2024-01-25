@@ -27,3 +27,11 @@ class GpsInitialStatusEvent extends GpsPermissionsEvent {
 class ChangeGpsStatusEvent extends GpsPermissionsEvent {
   const ChangeGpsStatusEvent();
 }
+
+class AskGpsAccessEvent extends GpsPermissionsEvent {
+  const AskGpsAccessEvent();
+}
+
+class OpenAppSettinsEvent extends GpsPermissionsEvent {
+  const OpenAppSettinsEvent();
+}
