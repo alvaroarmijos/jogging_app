@@ -5,6 +5,7 @@ import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissio
 import 'package:tracking_app/src/pages/loading_page.dart';
 
 import 'src/packages/core/ui/ui.dart';
+import 'src/packages/features/tracking/tracking.dart';
 
 void main() async {
   await init();
@@ -20,8 +21,20 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: TrackingThemes.light,
       title: 'Tracking App',
-      home: BlocProvider(
-        create: (context) => sl<GpsPermissionsBloc>(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => sl<GpsPermissionsBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => sl<LocationBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => MapBloc(
+              context.read<LocationBloc>(),
+            ),
+          ),
+        ],
         child: const LoadingPage(),
       ),
     );

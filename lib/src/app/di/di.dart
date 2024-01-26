@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissions.dart';
 
+import '../../packages/features/tracking/tracking.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -11,6 +13,8 @@ Future<void> init() async {
   sl.registerFactory(() => const GpsInitialStatus());
   sl.registerFactory(() => const GpsStatus());
   sl.registerFactory(() => const OpenAppSettins());
+  sl.registerFactory(() => const GetInitialPosition());
+  sl.registerFactory(() => const GpsPositionStream());
 
   // Features
   // Gps Permions
@@ -24,4 +28,13 @@ Future<void> init() async {
       sl(),
     ),
   );
+
+  //Tracking
+  sl.registerFactory(() => LocationBloc(
+        sl(),
+        sl(),
+      ));
+
+  // Map
+  sl.registerFactory(() => MapBloc(sl()));
 }
