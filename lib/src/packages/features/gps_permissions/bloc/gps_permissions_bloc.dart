@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
 
 part 'gps_permissions_event.dart';
@@ -16,7 +17,7 @@ class GpsPermissionsBloc
     this._openAppSettins,
     this._checkPermissionsGranted,
   ) : super(const GpsPermissionsState()) {
-    // on<GpsAndPermissionsEvent>(_onGpsAndPermissionsEvent);
+    on<GpsAndPermissionsEvent>(_onGpsAndPermissionsEvent);
     on<GpsInitialStatusEvent>(_onGpsInitialStatusEvent);
     on<ChangeGpsStatusEvent>(_onChangeGpsStatusEvent);
     on<AskGpsAccessEvent>(_onAskGpsAccessEvent);
@@ -31,27 +32,32 @@ class GpsPermissionsBloc
   final OpenAppSettins _openAppSettins;
   final CheckPermissionsGranted _checkPermissionsGranted;
 
-  // FutureOr<void> _onGpsAndPermissionsEvent(
-  //   GpsAndPermissionsEvent event,
-  //   Emitter<GpsPermissionsState> emit,
-  // ) {
-  //   emit(
-  //     state.copyWith(
-  //       isGpsEnabled: event.isGpsEnabled,
-  //       isGpsPermissionGranted: event.isGpsPermissionsGranted,
-  //     ),
-  //   );
-  // }
+  FutureOr<void> _onGpsAndPermissionsEvent(
+    GpsAndPermissionsEvent event,
+    Emitter<GpsPermissionsState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        isGpsEnabled: event.isGpsEnabled,
+        isGpsPermissionGranted: event.isGpsPermissionsGranted,
+      ),
+    );
+  }
 
   FutureOr<void> _onGpsInitialStatusEvent(
     GpsInitialStatusEvent event,
     Emitter<GpsPermissionsState> emit,
   ) {
     return emit.forEach(
-      _gpsInitialStatus().asStream(),
-      onData: ((data) => state.copyWith(
-            isGpsEnabled: data,
-          )),
+      Rx.combineLatest2(
+        _gpsInitialStatus().asStream(),
+        _checkPermissionsGranted(),
+        (gpsStatus, gpsGranted) => (gpsStatus, gpsGranted),
+      ),
+      onData: (data) => state.copyWith(
+        isGpsEnabled: data.$1,
+        isGpsPermissionGranted: data.$2,
+      ),
     );
   }
 
