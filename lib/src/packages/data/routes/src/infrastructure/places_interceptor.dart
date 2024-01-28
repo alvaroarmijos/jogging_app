@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
-const accessToken = 'your_access_token';
+const accessToken = 'your_api_key';
+
 
 class PlacesInterceptor extends Interceptor {
   @override
