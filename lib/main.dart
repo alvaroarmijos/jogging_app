@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
               context.read<LocationBloc>(),
             ),
           ),
+          BlocProvider(create: (context) => sl<SearchBloc>())
         ],
         child: const LoadingPage(),
       ),

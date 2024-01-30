@@ -37,4 +37,7 @@ Future<void> init() async {
 
   // Map
   sl.registerFactory(() => MapBloc(sl()));
+
+  // Search
+  sl.registerFactory(() => SearchBloc());
 }

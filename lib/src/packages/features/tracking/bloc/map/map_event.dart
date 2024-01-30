@@ -26,3 +26,7 @@ final class UpdateUserPolylineEvent extends MapEvent {
 
   final List<LatLng> userLocations;
 }
+
+final class ChangeShowUserRouteEvent extends MapEvent {
+  const ChangeShowUserRouteEvent();
+}

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
+
+import '../widgets/widgets.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -34,26 +37,27 @@ class _MapPageState extends State<MapPage> {
 
           return BlocBuilder<MapBloc, MapState>(
             builder: (context, mapState) {
-              return MapView(
-                  initialLocation: locationState.lastKnownLocation!,
-                  polylines: mapState.polylines.values.toSet());
+              Map<String, Polyline> polylines = Map.from(mapState.polylines);
+
+              if (!mapState.showMyRoute) {
+                polylines.removeWhere((key, value) => key == 'myRoute');
+              }
+
+              return Stack(
+                children: [
+                  MapView(
+                    initialLocation: locationState.lastKnownLocation!,
+                    polylines: polylines.values.toSet(),
+                  ),
+                  const SearchBarIcon(),
+                  const ManualMaker(),
+                ],
+              );
             },
           );
         },
       ),
-      floatingActionButton: FloatingActionButton.small(
-        onPressed: () {
-          final userLocation = locationBloc.state.lastKnownLocation;
-
-          if (userLocation == null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('No hay ubicaciion')));
-          }
-          mapBloc.add(const FollowingUserEvent(true));
-          mapBloc.moveCamera(userLocation!);
-        },
-        child: const Icon(Icons.my_location),
-      ),
+      floatingActionButton: const FloatingActions(),
     );
   }
 }

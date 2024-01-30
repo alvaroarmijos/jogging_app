@@ -17,8 +17,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<MapInitializedEvent>(_onMapInitializedEvent);
     on<FollowingUserEvent>(_onFollowingUserEvent);
     on<UpdateUserPolylineEvent>(_onUpdateUserPolylineEvent);
+    on<ChangeShowUserRouteEvent>(_onChangeShowUserRouteEvent);
 
-    locationBloc.stream.listen((locationState) {
+    locationStateSubscription = locationBloc.stream.listen((locationState) {
       if (locationState.lastKnownLocation != null) {
         add(UpdateUserPolylineEvent(locationState.myLocationHistory));
       }
@@ -30,6 +31,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   GoogleMapController? _mapController;
   final LocationBloc locationBloc;
+  StreamSubscription<LocationState>? locationStateSubscription;
 
   FutureOr<void> _onMapInitializedEvent(
     MapInitializedEvent event,
@@ -73,5 +75,18 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     currentPolylines["myRoute"] = myRoute;
 
     emit(state.copyWith(polylines: currentPolylines));
+  }
+
+  @override
+  Future<void> close() {
+    locationStateSubscription?.cancel();
+    return super.close();
+  }
+
+  FutureOr<void> _onChangeShowUserRouteEvent(
+    ChangeShowUserRouteEvent event,
+    Emitter<MapState> emit,
+  ) {
+    emit(state.copyWith(showMyRoute: !state.showMyRoute));
   }
 }
