@@ -29,12 +29,13 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<LocationBloc>(),
           ),
+          BlocProvider(create: (context) => sl<SearchBloc>()),
           BlocProvider(
             create: (context) => MapBloc(
               context.read<LocationBloc>(),
+              context.read<SearchBloc>(),
             ),
           ),
-          BlocProvider(create: (context) => sl<SearchBloc>())
         ],
         child: const LoadingPage(),
       ),

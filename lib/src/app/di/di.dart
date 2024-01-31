@@ -1,5 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
+import 'package:tracking_app/src/packages/data/routes/application/get_routes.dart';
+import 'package:tracking_app/src/packages/data/routes/domain/directions/directions_service.dart';
+import 'package:tracking_app/src/packages/data/routes/infrastructure/api_client.dart';
+import 'package:tracking_app/src/packages/data/routes/infrastructure/directions/directions_mapper.dart';
+import 'package:tracking_app/src/packages/data/routes/infrastructure/directions/directions_service_impl.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissions.dart';
 
 import '../../packages/features/tracking/tracking.dart';
@@ -15,6 +20,15 @@ Future<void> init() async {
   sl.registerFactory(() => const OpenAppSettins());
   sl.registerFactory(() => const GetInitialPosition());
   sl.registerFactory(() => const GpsPositionStream());
+
+  //Routes
+  //Use cases
+  sl.registerFactory(() => GetRoutes(sl()));
+  // Infrastrucre
+  sl.registerFactory<DirectionsService>(
+      () => DirectionsServiceImpl(sl(), sl()));
+  sl.registerFactory(() => const DirectionsMapper());
+  sl.registerFactory(() => RoutesApiClient());
 
   // Features
   // Gps Permions
@@ -36,8 +50,8 @@ Future<void> init() async {
       ));
 
   // Map
-  sl.registerFactory(() => MapBloc(sl()));
+  // sl.registerFactory(() => MapBloc(sl()));
 
   // Search
-  sl.registerFactory(() => SearchBloc());
+  sl.registerFactory(() => SearchBloc(sl()));
 }

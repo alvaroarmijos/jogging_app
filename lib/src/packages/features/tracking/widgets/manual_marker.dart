@@ -9,11 +9,22 @@ class ManualMaker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SearchBloc, SearchState>(builder: (context, state) {
-      return (state.showManualMarker)
-          ? const _ManualMakerView()
-          : const SizedBox();
-    });
+    return BlocConsumer<SearchBloc, SearchState>(
+        listenWhen: (previous, current) => previous.loading != current.loading,
+        listener: _listenState,
+        builder: (context, state) {
+          return (state.showManualMarker)
+              ? const _ManualMakerView()
+              : const SizedBox();
+        });
+  }
+
+  void _listenState(BuildContext context, SearchState state) {
+    if (state.loading) {
+      showLoadingMessage(context);
+    } else {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
   }
 }
 
@@ -24,6 +35,8 @@ class _ManualMakerView extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final searchBloc = context.read<SearchBloc>();
+    final locationBloc = context.read<LocationBloc>();
+    final mapBloc = context.read<MapBloc>();
 
     return SizedBox(
       height: size.height,
@@ -53,7 +66,17 @@ class _ManualMakerView extends StatelessWidget {
                 horizontal: TrackingDimens.dimen_24,
               ),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  final start = locationBloc.state.lastKnownLocation;
+
+                  if (start == null) return;
+
+                  final end = mapBloc.mapCenter;
+
+                  if (end == null) return;
+
+                  searchBloc.add(GetRouteEvent(start, end));
+                },
                 child: const Text('Confirmar'),
               ),
             ),

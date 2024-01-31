@@ -3,8 +3,10 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/data/routes/domain/directions/directions.dart';
 import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
 
 part 'map_event.dart';
@@ -13,11 +15,13 @@ part 'map_state.dart';
 class MapBloc extends Bloc<MapEvent, MapState> {
   MapBloc(
     this.locationBloc,
+    this.searchBloc,
   ) : super(const MapState()) {
     on<MapInitializedEvent>(_onMapInitializedEvent);
     on<FollowingUserEvent>(_onFollowingUserEvent);
     on<UpdateUserPolylineEvent>(_onUpdateUserPolylineEvent);
     on<ChangeShowUserRouteEvent>(_onChangeShowUserRouteEvent);
+    on<AddPolylineEvent>(_onAddPolylineEvent);
 
     locationStateSubscription = locationBloc.stream.listen((locationState) {
       if (locationState.lastKnownLocation != null) {
@@ -27,11 +31,22 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       if (locationState.lastKnownLocation == null) return;
       moveCamera(locationState.lastKnownLocation!);
     });
+
+    searchStateSubscription = searchBloc.stream.listen((searchState) {
+      if (searchState.directions != null) {
+        searchBloc.add(const ShowManualMarkerEvent(false));
+        drawRoutePolyline(searchState.directions!);
+      }
+    });
   }
 
-  GoogleMapController? _mapController;
   final LocationBloc locationBloc;
+  final SearchBloc searchBloc;
+
+  GoogleMapController? _mapController;
+  LatLng? mapCenter;
   StreamSubscription<LocationState>? locationStateSubscription;
+  StreamSubscription<SearchState>? searchStateSubscription;
 
   FutureOr<void> _onMapInitializedEvent(
     MapInitializedEvent event,
@@ -45,6 +60,23 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void moveCamera(LatLng newLocation) {
     final cameraUpdate = CameraUpdate.newLatLng(newLocation);
     _mapController?.animateCamera(cameraUpdate);
+  }
+
+  void drawRoutePolyline(Directions directions) async {
+    final route = Polyline(
+      polylineId: const PolylineId('route'),
+      color: Colors.black,
+      width: 5,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+      points: directions.points,
+    );
+
+    final currentPolylines = Map<String, Polyline>.from(state.polylines);
+
+    currentPolylines['route'] = route;
+
+    add(AddPolylineEvent(currentPolylines));
   }
 
   FutureOr<void> _onFollowingUserEvent(
@@ -80,6 +112,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   @override
   Future<void> close() {
     locationStateSubscription?.cancel();
+    searchStateSubscription?.cancel();
     return super.close();
   }
 
@@ -88,5 +121,12 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     Emitter<MapState> emit,
   ) {
     emit(state.copyWith(showMyRoute: !state.showMyRoute));
+  }
+
+  FutureOr<void> _onAddPolylineEvent(
+    AddPolylineEvent event,
+    Emitter<MapState> emit,
+  ) {
+    emit(state.copyWith(polylines: event.polyines));
   }
 }
