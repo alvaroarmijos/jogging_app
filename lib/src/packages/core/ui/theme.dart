@@ -16,12 +16,17 @@ class TrackingThemes {
     minimumSize: const Size.fromHeight(TrackingDimens.dimen_44),
   ));
 
+  static const _dividerThemeData = DividerThemeData(
+    color: Colors.grey,
+  );
+
   static ThemeData get light {
     return ThemeData.from(
       colorScheme: _colorSchemeLight,
       useMaterial3: true,
     ).copyWith(
       elevatedButtonTheme: _elevetedButtonTheme,
+      dividerTheme: _dividerThemeData,
     );
   }
 }

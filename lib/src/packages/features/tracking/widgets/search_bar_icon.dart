@@ -30,6 +30,14 @@ class _SearchBarIconView extends StatelessWidget {
       if (result.manual) {
         searchBloc.add(const ShowManualMarkerEvent(true));
       }
+
+      if (result.position != null) {
+        final start = context.read<LocationBloc>().state.lastKnownLocation;
+
+        if (start == null) return;
+
+        searchBloc.add(GetRouteEvent(start, result.position!));
+      }
     }
 
     return Align(

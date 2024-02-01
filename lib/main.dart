@@ -9,7 +9,15 @@ import 'src/packages/features/tracking/tracking.dart';
 
 void main() async {
   await init();
-  runApp(const MyApp());
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(
+        create: (context) => sl<LocationBloc>(),
+      ),
+      BlocProvider(create: (context) => sl<SearchBloc>()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -26,10 +34,6 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<GpsPermissionsBloc>(),
           ),
-          BlocProvider(
-            create: (context) => sl<LocationBloc>(),
-          ),
-          BlocProvider(create: (context) => sl<SearchBloc>()),
           BlocProvider(
             create: (context) => MapBloc(
               context.read<LocationBloc>(),

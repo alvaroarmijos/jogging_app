@@ -22,3 +22,19 @@ final class GetRouteEvent extends SearchEvent {
   @override
   List<Object> get props => [start, end];
 }
+
+final class GetPlacesEvent extends SearchEvent {
+  const GetPlacesEvent(this.proximity, this.query);
+
+  final LatLng proximity;
+  final String query;
+
+  @override
+  List<Object> get props => [proximity, query];
+}
+
+final class AddToHistoryEvent extends SearchEvent {
+  const AddToHistoryEvent(this.place);
+
+  final Place place;
+}

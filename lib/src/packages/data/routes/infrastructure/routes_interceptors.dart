@@ -17,3 +17,15 @@ class DirectionsInterceptor extends Interceptor {
     super.onRequest(options, handler);
   }
 }
+
+class PlacesInterceptor extends Interceptor {
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    options.queryParameters.addAll({
+      'language': 'es',
+      'limit': 7,
+      'access_token': accessToken,
+    });
+    super.onRequest(options, handler);
+  }
+}
