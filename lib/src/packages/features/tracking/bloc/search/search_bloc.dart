@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:tracking_app/src/packages/data/routes/routes.dart';
 
 part 'search_event.dart';
@@ -12,6 +13,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc(
     this._getRoutes,
     this._searchPlaces,
+    this._getPlace,
   ) : super(const SearchState()) {
     on<ShowManualMarkerEvent>(_onShowManualMarkerEvent);
     on<GetRouteEvent>(_onGetRouteEvent);
@@ -21,6 +23,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   final GetRoutes _getRoutes;
   final SearchPlaces _searchPlaces;
+  final GetPlace _getPlace;
 
   FutureOr<void> _onShowManualMarkerEvent(
     ShowManualMarkerEvent event,
@@ -39,9 +42,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   ) {
     emit(state.copyWith(loading: true));
     return emit.forEach(
-      _getRoutes(event.start, event.end),
-      onData: (directions) => state.copyWith(
-        directions: directions,
+      Rx.combineLatest2(
+        _getRoutes(event.start, event.end),
+        _getPlace(event.end),
+        (directions, place) => (directions, place),
+      ),
+      onData: (data) => state.copyWith(
+        directions: data.$1,
+        endPlace: data.$2,
         loading: false,
       ),
     );

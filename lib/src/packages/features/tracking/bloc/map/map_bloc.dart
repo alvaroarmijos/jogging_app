@@ -6,8 +6,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
-import 'package:tracking_app/src/packages/data/routes/domain/directions/directions.dart';
 import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
+
+import '../../../../data/routes/routes.dart';
 
 part 'map_event.dart';
 part 'map_state.dart';
@@ -35,7 +36,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     searchStateSubscription = searchBloc.stream.listen((searchState) {
       if (searchState.directions != null) {
         searchBloc.add(const ShowManualMarkerEvent(false));
-        drawRoutePolyline(searchState.directions!);
+        drawRoutePolyline(searchState.directions!, searchState.endPlace);
       }
     });
   }
@@ -62,7 +63,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     _mapController?.animateCamera(cameraUpdate);
   }
 
-  void drawRoutePolyline(Directions directions) async {
+  void drawRoutePolyline(Directions directions, Place? endPlace) async {
     final route = Polyline(
       polylineId: const PolylineId('route'),
       color: Colors.black,
@@ -72,11 +73,66 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       points: directions.points,
     );
 
-    final currentPolylines = Map<String, Polyline>.from(state.polylines);
+    double km = directions.distance / 1000;
+    km = (km * 100).floorToDouble();
+    km /= 100;
 
+    int walkingDuration = (directions.duration / 60).floorToDouble().toInt();
+
+    // Marker de google maps
+    // final startMarker = Marker(
+    //   markerId: const MarkerId('start'),
+    //   position: directions.points.first,
+    //   infoWindow: InfoWindow(
+    //     title: 'Inicio',
+    //     snippet: 'kms: $km, duration: $walkingDuration',
+    //   ),
+    // );
+
+    final startImageMarker = await getAssetImageMarker();
+
+    // Marker assets
+    final startMarker = Marker(
+      markerId: const MarkerId('start'),
+      position: directions.points.first,
+      icon: startImageMarker,
+      infoWindow: InfoWindow(
+        title: 'Inicio',
+        snippet: 'kms: $km, duration: $walkingDuration',
+      ),
+    );
+
+    //End marker de google maps
+    // final endMarker = Marker(
+    //   markerId: const MarkerId('end'),
+    //   position: directions.points.last,
+    //   infoWindow: InfoWindow(
+    //     title: endPlace?.text ?? 'Fin',
+    //     snippet: endPlace?.placeName ?? 'Este es el punto final de la ruta',
+    //   ),
+    // );
+
+    // Network marker
+
+    final endIcon = await getnetworkImageMarker();
+    final endMarker = Marker(
+      markerId: const MarkerId('end'),
+      position: directions.points.last,
+      icon: endIcon,
+      infoWindow: InfoWindow(
+        title: endPlace?.text ?? 'Fin',
+        snippet: endPlace?.placeName ?? 'Este es el punto final de la ruta',
+      ),
+    );
+
+    final currentPolylines = Map<String, Polyline>.from(state.polylines);
     currentPolylines['route'] = route;
 
-    add(AddPolylineEvent(currentPolylines));
+    final currentMarkers = Map<String, Marker>.from(state.markers);
+    currentMarkers['start'] = startMarker;
+    currentMarkers['end'] = endMarker;
+
+    add(AddPolylineEvent(currentPolylines, currentMarkers));
   }
 
   FutureOr<void> _onFollowingUserEvent(
@@ -127,6 +183,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     AddPolylineEvent event,
     Emitter<MapState> emit,
   ) {
-    emit(state.copyWith(polylines: event.polyines));
+    emit(state.copyWith(polylines: event.polyines, markers: event.markers));
   }
 }

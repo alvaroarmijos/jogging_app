@@ -4,4 +4,6 @@ import 'places.dart';
 
 abstract class PlacesService {
   Stream<List<Place>> searchPlaces(LatLng proximity, String query);
+
+  Stream<Place> getPlaceByPoint(LatLng point);
 }

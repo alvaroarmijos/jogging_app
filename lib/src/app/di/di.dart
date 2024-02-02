@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
-import 'package:tracking_app/src/packages/data/routes/application/get_routes.dart';
 import 'package:tracking_app/src/packages/data/routes/domain/directions/directions_service.dart';
 import 'package:tracking_app/src/packages/data/routes/domain/places/places_service.dart';
 import 'package:tracking_app/src/packages/data/routes/infrastructure/api_client.dart';
@@ -8,15 +7,15 @@ import 'package:tracking_app/src/packages/data/routes/infrastructure/directions/
 import 'package:tracking_app/src/packages/data/routes/infrastructure/directions/directions_service_impl.dart';
 import 'package:tracking_app/src/packages/data/routes/infrastructure/places/places_mapper.dart';
 import 'package:tracking_app/src/packages/data/routes/infrastructure/places/places_service_impl.dart';
+import 'package:tracking_app/src/packages/data/routes/routes.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissions.dart';
 
-import '../../packages/data/routes/application/search_places.dart';
 import '../../packages/features/tracking/tracking.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  // Use casos
+  // Use cases
   sl.registerFactory(() => const AskGpsAccess());
   sl.registerFactory(() => const CheckPermissionsGranted());
   sl.registerFactory(() => const GpsInitialStatus());
@@ -29,6 +28,7 @@ Future<void> init() async {
   //Use cases
   sl.registerFactory(() => GetRoutes(sl()));
   sl.registerFactory(() => SearchPlaces(sl()));
+  sl.registerFactory(() => GetPlace(sl()));
   // Infrastructure
   sl.registerFactory<DirectionsService>(
       () => DirectionsServiceImpl(sl(), sl()));
@@ -61,5 +61,5 @@ Future<void> init() async {
   // sl.registerFactory(() => MapBloc(sl()));
 
   // Search
-  sl.registerFactory(() => SearchBloc(sl(), sl()));
+  sl.registerFactory(() => SearchBloc(sl(), sl(), sl()));
 }

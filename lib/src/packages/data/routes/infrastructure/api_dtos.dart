@@ -178,13 +178,11 @@ class WaypointDto {
 // Places
 class PlacesDto {
   final String type;
-  final List<String> query;
   final List<FeatureDto> features;
   final String attribution;
 
   PlacesDto({
     required this.type,
-    required this.query,
     required this.features,
     required this.attribution,
   });
@@ -196,7 +194,6 @@ class PlacesDto {
 
   factory PlacesDto.fromJson(Map<String, dynamic> json) => PlacesDto(
         type: json["type"],
-        query: List<String>.from(json["query"].map((x) => x)),
         features: List<FeatureDto>.from(
             json["features"].map((x) => FeatureDto.fromJson(x))),
         attribution: json["attribution"],
@@ -204,7 +201,6 @@ class PlacesDto {
 
   Map<String, dynamic> toJson() => {
         "type": type,
-        "query": List<dynamic>.from(query.map((x) => x)),
         "features": List<dynamic>.from(features.map((x) => x.toJson())),
         "attribution": attribution,
       };
@@ -215,7 +211,6 @@ class FeatureDto {
   final String type;
   final List<String> placeType;
   final int relevance;
-  final PropertiesDto properties;
   final String textEs;
   final String placeNameEs;
   final String text;
@@ -228,7 +223,6 @@ class FeatureDto {
     required this.type,
     required this.placeType,
     required this.relevance,
-    required this.properties,
     required this.textEs,
     required this.placeNameEs,
     required this.text,
@@ -247,7 +241,6 @@ class FeatureDto {
         type: json["type"] ?? "",
         placeType: List<String>.from(json["place_type"].map((x) => x)),
         relevance: json["relevance"],
-        properties: PropertiesDto.fromJson(json["properties"]),
         textEs: json["text_es"],
         placeNameEs: json["place_name_es"],
         text: json["text"],
@@ -261,7 +254,6 @@ class FeatureDto {
         "type": type,
         "place_type": List<dynamic>.from(placeType.map((x) => x)),
         "relevance": relevance,
-        "properties": properties.toJson(),
         "text_es": textEs,
         "place_name_es": placeNameEs,
         "text": text,
@@ -294,43 +286,6 @@ class GeometryDto {
   Map<String, dynamic> toJson() => {
         "coordinates": List<dynamic>.from(coordinates.map((x) => x)),
         "type": type,
-      };
-}
-
-class PropertiesDto {
-  final String foursquare;
-  final bool landmark;
-  final String? address;
-  final String category;
-  final String? wikidata;
-
-  PropertiesDto({
-    required this.foursquare,
-    required this.landmark,
-    this.address,
-    required this.category,
-    this.wikidata,
-  });
-
-  factory PropertiesDto.fromRawJson(String str) =>
-      PropertiesDto.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory PropertiesDto.fromJson(Map<String, dynamic> json) => PropertiesDto(
-        foursquare: json["foursquare"],
-        landmark: json["landmark"],
-        address: json["address"],
-        category: json["category"],
-        wikidata: json["wikidata"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "foursquare": foursquare,
-        "landmark": landmark,
-        "address": address,
-        "category": category,
-        "wikidata": wikidata,
       };
 }
 

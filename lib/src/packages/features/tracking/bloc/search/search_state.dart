@@ -5,6 +5,7 @@ final class SearchState extends Equatable {
     this.showManualMarker = false,
     this.loading = false,
     this.directions,
+    this.endPlace,
     this.places = const [],
     this.history = const [],
   });
@@ -14,6 +15,7 @@ final class SearchState extends Equatable {
   final Directions? directions;
   final List<Place> places;
   final List<Place> history;
+  final Place? endPlace;
 
   SearchState copyWith({
     bool? showManualMarker,
@@ -21,6 +23,7 @@ final class SearchState extends Equatable {
     Directions? directions,
     List<Place>? places,
     List<Place>? history,
+    Place? endPlace,
   }) =>
       SearchState(
         showManualMarker: showManualMarker ?? this.showManualMarker,
@@ -28,9 +31,10 @@ final class SearchState extends Equatable {
         directions: directions ?? this.directions,
         places: places ?? this.places,
         history: history ?? this.history,
+        endPlace: endPlace ?? this.endPlace,
       );
 
   @override
   List<Object?> get props =>
-      [showManualMarker, loading, directions, places, history];
+      [showManualMarker, loading, directions, places, history, endPlace];
 }

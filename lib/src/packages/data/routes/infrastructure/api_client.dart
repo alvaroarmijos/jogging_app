@@ -37,11 +37,28 @@ class RoutesApiClient {
 
       final resp = await _dioPlaces.get(url, queryParameters: {
         'proximity': '${proximity.longitude},${proximity.latitude}',
+        'limit': 7,
       });
 
       final places = PlacesDto.fromJson(resp.data);
 
       return places.features;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  Future<FeatureDto> getPlaceInformation(LatLng point) async {
+    try {
+      final url = '$_basePlacesUrl/${point.longitude},${point.latitude}.json';
+
+      final resp = await _dioPlaces.get(url, queryParameters: {
+        'limit': 1,
+      });
+
+      final places = PlacesDto.fromJson(resp.data);
+
+      return places.features.first;
     } catch (e) {
       throw Exception();
     }

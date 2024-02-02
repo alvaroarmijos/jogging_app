@@ -32,7 +32,8 @@ final class ChangeShowUserRouteEvent extends MapEvent {
 }
 
 final class AddPolylineEvent extends MapEvent {
-  const AddPolylineEvent(this.polyines);
+  const AddPolylineEvent(this.polyines, this.markers);
 
   final Map<String, Polyline> polyines;
+  final Map<String, Marker> markers;
 }
