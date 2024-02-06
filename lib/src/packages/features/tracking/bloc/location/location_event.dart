@@ -16,7 +16,8 @@ final class StartTrackingUserEvent extends LocationEvent {
 }
 
 final class NewUserLocationEvent extends LocationEvent {
-  const NewUserLocationEvent(this.newLocation);
+  const NewUserLocationEvent(this.newLocation, this.speed);
 
   final LatLng newLocation;
+  final double speed;
 }

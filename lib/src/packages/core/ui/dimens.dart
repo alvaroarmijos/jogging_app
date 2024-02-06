@@ -13,4 +13,5 @@ class TrackingDimens {
   static const double dimen_40 = 40;
   static const double dimen_44 = 44;
   static const double dimen_48 = 48;
+  static const double dimen_60 = 60;
 }

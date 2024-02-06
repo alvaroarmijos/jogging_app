@@ -1,7 +1,11 @@
 export './colors.dart';
 export './dimens.dart';
 export './drawables.dart';
+export './helpers/widgets_to_markers.dart';
 export './map_style.dart';
+export './markers/end_cabify_marker.dart';
+export './markers/end_uber_marker.dart';
+export './markers/start_cabify_marker.dart';
 export './markers/start_uber_marker.dart';
 export './theme.dart';
 export './widgets/custom_image_marker.dart';

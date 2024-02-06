@@ -13,8 +13,7 @@ class TestMarkerPage extends StatelessWidget {
           width: 300,
           // color: Colors.red,
           child: CustomPaint(
-            painter: StartUberMarker(
-              minutes: 30,
+            painter: EndCabifyMarker(
               description: 'Supermaxi',
             ),
           ),

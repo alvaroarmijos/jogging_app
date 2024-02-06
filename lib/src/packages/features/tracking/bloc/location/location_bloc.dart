@@ -36,7 +36,12 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     Emitter<LocationState> emit,
   ) {
     return emit.onEach(_gpsPositionStream(), onData: (position) {
-      add(NewUserLocationEvent(LatLng(position.latitude, position.longitude)));
+      add(
+        NewUserLocationEvent(
+          LatLng(position.latitude, position.longitude),
+          0.0,
+        ),
+      );
     });
   }
 

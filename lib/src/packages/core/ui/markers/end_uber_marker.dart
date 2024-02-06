@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:tracking_app/src/packages/core/ui/colors.dart';
 
-class StartUberMarker extends CustomPainter {
-  final int minutes;
+class EndUberMarker extends CustomPainter {
+  final int kilometers;
   final String description;
 
-  StartUberMarker({
-    required this.minutes,
+  EndUberMarker({
+    required this.kilometers,
     required this.description,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     const circlePurpleRadius = 20.0;
-    const circlePurpleWhite = 7.0;
+    const circleWhiteRadius = 7.0;
     //Pencil
 
     final purplePaint = Paint()..color = TrackingColors.primary;
@@ -21,24 +21,24 @@ class StartUberMarker extends CustomPainter {
 
     // Purple circle
     canvas.drawCircle(
-      Offset(circlePurpleRadius, size.height - circlePurpleRadius),
+      Offset(size.width / 2, size.height - circlePurpleRadius),
       circlePurpleRadius,
       purplePaint,
     );
 
     // White circle
     canvas.drawCircle(
-      Offset(circlePurpleRadius, size.height - circlePurpleRadius),
-      circlePurpleWhite,
+      Offset(size.width / 2, size.height - circlePurpleRadius),
+      circleWhiteRadius,
       whitePaint,
     );
 
     // Draw white box
     final path = Path();
-    path.moveTo(40, 20);
+    path.moveTo(10, 20);
     path.lineTo(size.width - 10, 20);
     path.lineTo(size.width - 10, 100);
-    path.lineTo(40, 100);
+    path.lineTo(10, 100);
 
     // Shadow
     canvas.drawShadow(path, Colors.black, 10, false);
@@ -47,14 +47,14 @@ class StartUberMarker extends CustomPainter {
     canvas.drawPath(path, whitePaint);
 
     // Purple box
-    const purpleBox = Rect.fromLTWH(40, 20, 70, 80);
+    const purpleBox = Rect.fromLTWH(10, 20, 70, 80);
     canvas.drawRect(purpleBox, purplePaint);
 
     // Textos
 
-    // Minutos
+    // Kilometros
     final textSpan = TextSpan(
-      text: minutes.toString(),
+      text: kilometers.toString(),
       style: const TextStyle(
         color: Colors.white,
         fontSize: 30,
@@ -62,7 +62,7 @@ class StartUberMarker extends CustomPainter {
       ),
     );
 
-    final minutesPainter = TextPainter(
+    final kilometersPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.center,
@@ -71,10 +71,10 @@ class StartUberMarker extends CustomPainter {
         maxWidth: 70,
       );
 
-    minutesPainter.paint(canvas, const Offset(40, 35));
+    kilometersPainter.paint(canvas, const Offset(10, 30));
 
-    const minutesTextSpan = TextSpan(
-        text: "min",
+    const kilometersTextSpan = TextSpan(
+        text: "km",
         style: TextStyle(
           color: Colors.white,
           fontSize: 24,
@@ -82,7 +82,7 @@ class StartUberMarker extends CustomPainter {
         ));
 
     final minPainter = TextPainter(
-      text: minutesTextSpan,
+      text: kilometersTextSpan,
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.center,
     )..layout(
@@ -90,7 +90,7 @@ class StartUberMarker extends CustomPainter {
         maxWidth: 70,
       );
 
-    minPainter.paint(canvas, const Offset(40, 68));
+    minPainter.paint(canvas, const Offset(10, 65));
 
     //Description
     final locationTextSpan = TextSpan(
@@ -111,9 +111,9 @@ class StartUberMarker extends CustomPainter {
         maxWidth: size.width - 135,
       );
 
-    final double offsetY = (description.length > 20) ? 40 : 48;
+    final double offsetY = (description.length > 20) ? 32 : 48;
 
-    locationPainter.paint(canvas, Offset(120, offsetY));
+    locationPainter.paint(canvas, Offset(90, offsetY));
   }
 
   @override

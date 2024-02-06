@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/app/di/di.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/gps_permissions.dart';
-import 'package:tracking_app/src/packages/features/tracking/pages/test_marker_page.dart';
 
 import 'src/packages/core/ui/ui.dart';
 import 'src/packages/features/tracking/tracking.dart';
+import 'src/pages/loading_page.dart';
 
 void main() async {
   await init();
@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ],
-        // child: const LoadingPage(),
-        child: const TestMarkerPage(),
+        child: const LoadingPage(),
+        // child: const TestMarkerPage(),
       ),
     );
   }

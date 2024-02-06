@@ -16,8 +16,8 @@ class TrackingThemes {
     minimumSize: const Size.fromHeight(TrackingDimens.dimen_44),
   ));
 
-  static const _dividerThemeData = DividerThemeData(
-    color: Colors.grey,
+  static final _dividerThemeData = DividerThemeData(
+    color: Colors.grey.withOpacity(0.5),
   );
 
   static ThemeData get light {

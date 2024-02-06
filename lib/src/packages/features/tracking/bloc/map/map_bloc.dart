@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -35,7 +36,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     searchStateSubscription = searchBloc.stream.listen((searchState) {
       if (searchState.directions != null) {
-        searchBloc.add(const ShowManualMarkerEvent(false));
+        // searchBloc.add(const ShowManualMarkerEvent(false));
         drawRoutePolyline(searchState.directions!, searchState.endPlace);
       }
     });
@@ -79,6 +80,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     int walkingDuration = (directions.duration / 60).floorToDouble().toInt();
 
+    /// Start markers
+    ///
     // Marker de google maps
     // final startMarker = Marker(
     //   markerId: const MarkerId('start'),
@@ -89,19 +92,37 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     //   ),
     // );
 
-    final startImageMarker = await getAssetImageMarker();
+    // From image
+    // final startImageMarker = await getAssetImageMarker();
+
+    // Uber marker
+    final startUberMarker =
+        await getStartUberMarker(walkingDuration, endPlace?.placeName ?? "");
+
+    // Cabify Marker
+    final startcabifyMarker =
+        await getCabifyMarker(endPlace?.placeName ?? "", true);
 
     // Marker assets
     final startMarker = Marker(
       markerId: const MarkerId('start'),
       position: directions.points.first,
-      icon: startImageMarker,
+      icon: Platform.isAndroid ? startcabifyMarker : startUberMarker,
+      //Uber marker
+      // anchor: const Offset(0.05, 0.9),
+      //Cabify Marker
+      anchor: Platform.isAndroid
+          ? const Offset(0.95, 0.9)
+          : const Offset(0.05, 0.9),
       infoWindow: InfoWindow(
         title: 'Inicio',
         snippet: 'kms: $km, duration: $walkingDuration',
       ),
     );
 
+    /// End Markers
+    ///
+    ///
     //End marker de google maps
     // final endMarker = Marker(
     //   markerId: const MarkerId('end'),
@@ -113,12 +134,19 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     // );
 
     // Network marker
+    // final endIcon = await getnetworkImageMarker();
 
-    final endIcon = await getnetworkImageMarker();
+    // End Uber marker
+    final endUberMarker =
+        await getEndUberMarker(km.toInt(), endPlace?.text ?? "");
+
+    // End Cabify Marker
+    final endCabifyMarker = await getCabifyMarker(endPlace?.text ?? "", false);
+
     final endMarker = Marker(
       markerId: const MarkerId('end'),
       position: directions.points.last,
-      icon: endIcon,
+      icon: Platform.isAndroid ? endCabifyMarker : endUberMarker,
       infoWindow: InfoWindow(
         title: endPlace?.text ?? 'Fin',
         snippet: endPlace?.placeName ?? 'Este es el punto final de la ruta',
