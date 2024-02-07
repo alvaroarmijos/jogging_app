@@ -19,19 +19,19 @@ class RunningInfo extends StatelessWidget {
                 ItemInfo(
                   icon: TrackingDrawables.getRunningDrawable(),
                   label: 'km',
-                  value: '10',
+                  value: state.distance.toStringAsFixed(2),
                 ),
                 const VerticalDivider(),
                 ItemInfo(
                   icon: TrackingDrawables.getFireDrawable(),
                   label: 'kcal',
-                  value: '5',
+                  value: state.kcal.toStringAsFixed(1),
                 ),
                 const VerticalDivider(),
                 ItemInfo(
                   icon: TrackingDrawables.getVelocityDrawable(),
                   label: 'km/hr',
-                  value: state.speed.toStringAsFixed(1),
+                  value: state.speedInKiometers.toStringAsFixed(1),
                 ),
               ],
             );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
+import '../../../ui.dart';
 
 class TrackingThemes {
   TrackingThemes._();
@@ -24,6 +24,27 @@ class TrackingThemes {
     color: TrackingColors.primary.withOpacity(0.2),
   );
 
+  static final inputDecorationTheme = InputDecorationTheme(
+    fillColor: Colors.white,
+    filled: true,
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.white),
+      borderRadius: BorderRadius.circular(TrackingDimens.dimen_20),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.white),
+      borderRadius: BorderRadius.circular(TrackingDimens.dimen_20),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.red),
+      borderRadius: BorderRadius.circular(TrackingDimens.dimen_20),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.red),
+      borderRadius: BorderRadius.circular(TrackingDimens.dimen_20),
+    ),
+  );
+
   static ThemeData get light {
     return ThemeData.from(
       colorScheme: _colorSchemeLight,
@@ -31,6 +52,7 @@ class TrackingThemes {
     ).copyWith(
       elevatedButtonTheme: elevatedButtonTheme,
       dividerTheme: dividerThemeData,
+      inputDecorationTheme: inputDecorationTheme,
     );
   }
 }

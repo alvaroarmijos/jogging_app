@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/core/utility/utility.dart';
 import 'package:tracking_app/src/packages/data/routes/routes.dart';
 import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
 
@@ -178,7 +179,15 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     //   (value) => _mapController?.showMarkerInfoWindow(const MarkerId('start')),
     // );
 
+    centerCameraPoints(directions.points);
+
     add(AddPolylineEvent(currentPolylines, currentMarkers));
+  }
+
+  void centerCameraPoints(List<LatLng> points) {
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLngBounds(getLatLangBounds(points), 50),
+    );
   }
 
   @override

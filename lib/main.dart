@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/features/onboarding/bloc/bloc/onboarding_bloc.dart';
+import 'package:tracking_app/src/packages/features/onboarding/pages/onboarding_page.dart';
 import 'package:tracking_app/src/packages/features/tracking/tracking.dart';
-import 'package:tracking_app/src/pages/loading_page.dart';
 
 import 'app/di/injection_container.dart' as di;
 import 'src/packages/features/gps_permissions/gps_permissions.dart';
@@ -21,6 +22,7 @@ void main() async {
         BlocProvider(
             create: (context) => MapBloc(
                 context.read<LocationBloc>(), context.read<SearchBloc>())),
+        BlocProvider(create: (context) => di.sl<OnboardingBloc>()),
       ],
       child: const MyApp(),
     ),
@@ -36,7 +38,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: TrackingThemes.light,
       title: 'Tracking App',
-      home: const LoadingPage(),
+      // home: const LoadingPage(),
+      home: const OnboardingPage(),
     );
   }
 }
