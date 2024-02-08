@@ -1,5 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'package:rx_shared_preferences/rx_shared_preferences.dart';
+import 'package:tracking_app/app/bloc/bloc/app_bloc.dart';
 import 'package:tracking_app/src/packages/core/utility/utility.dart';
+import 'package:tracking_app/src/packages/data/account/account.dart';
+import 'package:tracking_app/src/packages/data/account/src/domain/user/user_repository.dart';
+import 'package:tracking_app/src/packages/data/account/src/infrastructure/user/auth_cache.dart';
+import 'package:tracking_app/src/packages/data/account/src/infrastructure/user/user_repsoritory_impl.dart';
 import 'package:tracking_app/src/packages/data/device/application.dart';
 import 'package:tracking_app/src/packages/data/routes/routes.dart';
 import 'package:tracking_app/src/packages/data/routes/src/domain/directions/directions_service.dart';
@@ -17,6 +23,15 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   /// Data
+  ///
+  /// Account
+  // Use Cases
+  sl.registerLazySingleton(() => SaveUser(sl()));
+  sl.registerLazySingleton(() => CheckUserExists(sl()));
+  // Domain
+  sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(sl()));
+  // Infrastructure
+  sl.registerLazySingleton(() => AuthCache(sl()));
 
   /// Device
   ///
@@ -66,5 +81,11 @@ Future<void> init() async {
 
   //Onboarding
   // Bloc
-  sl.registerFactory(() => OnboardingBloc(sl()));
+  sl.registerFactory(() => OnboardingBloc(sl(), sl()));
+
+  // App bloc
+  sl.registerFactory(() => AppBloc(sl()));
+
+  // External
+  sl.registerLazySingleton(() => RxSharedPreferences.getInstance());
 }

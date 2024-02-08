@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tracking_app/src/packages/core/utility/utility.dart';
+import 'package:tracking_app/src/packages/data/account/account.dart';
 
 part 'onboarding_event.dart';
 part 'onboarding_state.dart';
@@ -10,14 +11,17 @@ part 'onboarding_state.dart';
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingBloc(
     this._inputConverter,
+    this._saveUser,
   ) : super(const OnboardingState()) {
     on<ChangeNameEvent>(_onChangeNameEvent);
     on<ChangeEmailEvent>(_onChangeEmailEvent);
     on<ChangeAgeEvent>(_onChangeAgeEvent);
     on<ChangeWeightEvent>(_onChangeWeightEvent);
+    on<NextButtonPressedEvent>(_onNextButtonPressedEvent);
   }
 
   final InputConverter _inputConverter;
+  final SaveUser _saveUser;
 
   FutureOr<void> _onChangeNameEvent(
     ChangeNameEvent event,
@@ -61,5 +65,14 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     } catch (e) {
       emit(state.copyWith(error: e, weight: 0));
     }
+  }
+
+  FutureOr<void> _onNextButtonPressedEvent(
+    NextButtonPressedEvent event,
+    Emitter<OnboardingState> emit,
+  ) {
+    final user = User(state.name!, state.email!, state.age!, state.weight!);
+
+    _saveUser(user);
   }
 }

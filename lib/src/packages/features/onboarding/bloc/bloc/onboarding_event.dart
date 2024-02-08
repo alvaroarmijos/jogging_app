@@ -30,3 +30,7 @@ final class ChangeWeightEvent extends OnboardingEvent {
 
   final String weight;
 }
+
+final class NextButtonPressedEvent extends OnboardingEvent {
+  const NextButtonPressedEvent();
+}

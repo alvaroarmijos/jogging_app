@@ -96,7 +96,9 @@ class InformationPage extends StatelessWidget {
             BlocBuilder<OnboardingBloc, OnboardingState>(
               builder: (context, state) {
                 return ElevatedButton(
-                  onPressed: state.showContinueButton ? () {} : null,
+                  onPressed: state.showContinueButton
+                      ? () => bloc.add(const NextButtonPressedEvent())
+                      : null,
                   child: const Text('Continuar'),
                 );
               },
