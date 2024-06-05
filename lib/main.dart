@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/features/gps_permissions/pages/gps_page.dart';
 
 void main() => runApp(const MyApp());
 
@@ -8,16 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
+      theme: AppTheme.light,
       title: 'Tracking App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Tracking App Bar'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
-      ),
+      home: const GpsPage(),
     );
   }
 }
