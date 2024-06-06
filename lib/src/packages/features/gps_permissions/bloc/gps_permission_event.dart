@@ -16,3 +16,11 @@ class GpsAndPermissionEvent extends GpsPermissionEvent {
   final bool isGpsEnabled;
   final bool isGpsPermissionsGranted;
 }
+
+class GpsInitialStatusEvent extends GpsPermissionEvent {
+  const GpsInitialStatusEvent();
+}
+
+class ChangeGpsStatusEvent extends GpsPermissionEvent {
+  const ChangeGpsStatusEvent();
+}

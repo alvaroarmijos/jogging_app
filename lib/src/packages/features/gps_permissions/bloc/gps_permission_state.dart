@@ -2,7 +2,7 @@ part of 'gps_permission_bloc.dart';
 
 class GpsPermissionState extends Equatable {
   const GpsPermissionState({
-    this.isGpsEnable = false,
+    this.isGpsEnable = true,
     this.isGpsPermissionGranted = false,
   });
 
