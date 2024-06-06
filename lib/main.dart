@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
-import 'package:tracking_app/src/packages/data/device/application/gps_initial_status.dart';
-import 'package:tracking_app/src/packages/data/device/application/gps_status.dart';
+import 'package:tracking_app/src/packages/data/device/application/application.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/bloc/gps_permission_bloc.dart';
-import 'package:tracking_app/src/packages/features/gps_permissions/pages/gps_page.dart';
+import 'package:tracking_app/src/pages/loading_page.dart';
 
 void main() => runApp(const MyApp());
 
@@ -20,8 +19,11 @@ class MyApp extends StatelessWidget {
           create: (context) => GpsPermissionBloc(
             const GpsInitialStatus(),
             const GpsStatus(),
+            const AskGpsPermissions(),
+            const OpenAppSettings(),
+            const CheckPermissions(),
           ),
-          child: const GpsPage(),
+          child: const LoadingPage(),
         ));
   }
 }

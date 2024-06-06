@@ -9,6 +9,8 @@ class GpsPermissionState extends Equatable {
   final bool isGpsEnable;
   final bool isGpsPermissionGranted;
 
+  bool get isAllEnabled => isGpsEnable && isGpsPermissionGranted;
+
   GpsPermissionState copyWith({
     bool? isGpsEnable,
     bool? isGpsPermissionGranted,

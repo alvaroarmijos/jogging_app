@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/features/gps_permissions/bloc/gps_permission_bloc.dart';
 
 class EnableGps extends StatelessWidget {
   const EnableGps({super.key});
@@ -39,7 +41,11 @@ class EnableGps extends StatelessWidget {
               height: AppDimens.dimen_24,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                context
+                    .read<GpsPermissionBloc>()
+                    .add(const AskGpsAccessEvent());
+              },
               child: const Text('Solicitar Permisos'),
             ),
           ],
