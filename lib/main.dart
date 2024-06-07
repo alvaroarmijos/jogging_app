@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
 import 'package:tracking_app/src/packages/data/device/application/application.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/bloc/gps_permission_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/location_bloc/location_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/map_bloc/map_bloc.dart';
 import 'package:tracking_app/src/pages/loading_page.dart';
 
 void main() => runApp(const MyApp());
@@ -15,14 +17,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         theme: AppTheme.light,
         title: 'Tracking App',
-        home: BlocProvider(
-          create: (context) => GpsPermissionBloc(
-            const GpsInitialStatus(),
-            const GpsStatus(),
-            const AskGpsPermissions(),
-            const OpenAppSettings(),
-            const CheckPermissions(),
-          ),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => GpsPermissionBloc(
+                const GpsInitialStatus(),
+                const GpsStatus(),
+                const AskGpsPermissions(),
+                const OpenAppSettings(),
+                const CheckPermissions(),
+              ),
+            ),
+            BlocProvider(
+              create: (_) => LocationBloc(
+                const GetInitialPosition(),
+                const GpsPositionStream(),
+              ),
+            ),
+            BlocProvider(
+              create: (_) => MapBloc(),
+            )
+          ],
           child: const LoadingPage(),
         ));
   }

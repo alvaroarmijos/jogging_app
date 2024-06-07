@@ -45,28 +45,32 @@ class GpsPermissionBloc extends Bloc<GpsPermissionEvent, GpsPermissionState> {
     GpsInitialStatusEvent event,
     Emitter<GpsPermissionState> emit,
   ) {
-    return emit.forEach(_gpsInitialStatus(), onData: (isGpsEnable) {
-      return state.copyWith(
-        isGpsEnable: isGpsEnable,
-      );
-    });
+    return emit.forEach(
+      Rx.combineLatest2(
+        _gpsInitialStatus(),
+        _checkPermissions(),
+        (isGpsEnabled, isPermissionEnabled) =>
+            (isGpsEnabled, isPermissionEnabled),
+      ),
+      onData: (data) {
+        return state.copyWith(
+          isGpsEnable: data.$1,
+          isGpsPermissionGranted: data.$2,
+        );
+      },
+    );
   }
 
   FutureOr<void> _onChangeGpsStatusEvent(
       ChangeGpsStatusEvent event, Emitter<GpsPermissionState> emit) async {
     return emit.forEach(
-        // _gpsStatus(),
-        Rx.combineLatest2(
-          _gpsStatus(),
-          _checkPermissions(),
-          (isGpsEnabled, isPermissionEnabled) =>
-              (isGpsEnabled, isPermissionEnabled),
-        ), onData: (data) {
-      return state.copyWith(
-        isGpsEnable: data.$1,
-        isGpsPermissionGranted: data.$2,
-      );
-    });
+      _gpsStatus(),
+      onData: (data) {
+        return state.copyWith(
+          isGpsEnable: data,
+        );
+      },
+    );
   }
 
   void _init() {
