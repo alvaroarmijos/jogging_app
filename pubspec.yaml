@@ -34,6 +34,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.5
   geolocator: ^12.0.0
+  get_it: ^7.7.0
   google_maps_flutter: ^2.7.0
   permission_handler: ^11.3.1
   rxdart: ^0.27.7

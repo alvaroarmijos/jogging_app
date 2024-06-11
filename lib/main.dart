@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tracking_app/app/di/injection_container.dart' as di;
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
-import 'package:tracking_app/src/packages/data/device/application/application.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/bloc/gps_permission_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/location_bloc/location_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/map_bloc/map_bloc.dart';
 import 'package:tracking_app/src/pages/loading_page.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  di.setup();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,23 +23,14 @@ class MyApp extends StatelessWidget {
         home: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (_) => GpsPermissionBloc(
-                const GpsInitialStatus(),
-                const GpsStatus(),
-                const AskGpsPermissions(),
-                const OpenAppSettings(),
-                const CheckPermissions(),
-              ),
+              create: (_) => di.sl<GpsPermissionBloc>(),
             ),
             BlocProvider(
-              create: (_) => LocationBloc(
-                const GetInitialPosition(),
-                const GpsPositionStream(),
-              ),
+              create: (_) => di.sl<LocationBloc>(),
             ),
             BlocProvider(
-              create: (_) => MapBloc(),
-            )
+              create: (_) => di.sl<MapBloc>(),
+            ),
           ],
           child: const LoadingPage(),
         ));

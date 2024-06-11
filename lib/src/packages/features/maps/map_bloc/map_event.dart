@@ -12,3 +12,19 @@ class MapInitializeEvent extends MapEvent {
 
   final GoogleMapController controller;
 }
+
+class UpdateUserPolylineEvent extends MapEvent {
+  const UpdateUserPolylineEvent(this.userLocations);
+
+  final List<LatLng> userLocations;
+}
+
+class FollowingUserEvent extends MapEvent {
+  const FollowingUserEvent(this.isFollowingUser);
+
+  final bool isFollowingUser;
+}
+
+class ChangeShowUserRouteEvent extends MapEvent {
+  const ChangeShowUserRouteEvent();
+}
