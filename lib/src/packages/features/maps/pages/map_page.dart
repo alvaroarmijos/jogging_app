@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/features/maps/location_bloc/location_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/map_bloc/map_bloc.dart';
-import 'package:tracking_app/src/packages/features/maps/widgets/map_view.dart';
+import 'package:tracking_app/src/packages/features/maps/widgets/widgets.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -55,37 +55,21 @@ class _MapPageState extends State<MapPage> {
                 polylines.removeWhere((key, poyline) => key == 'myRoute');
               }
 
-              return MapView(
-                lastKnownLocation: state.lastKnownLocation!,
-                polylines: polylines.values.toSet(),
+              return Stack(
+                children: [
+                  MapView(
+                    lastKnownLocation: state.lastKnownLocation!,
+                    polylines: polylines.values.toSet(),
+                  ),
+                  const SearchbarIcon(),
+                  const ManualMarker(),
+                ],
               );
             },
           );
         },
       ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton.small(
-            onPressed: () => mapBloc.add(const ChangeShowUserRouteEvent()),
-            child: const Icon(
-              Icons.more_horiz,
-            ),
-          ),
-          FloatingActionButton.small(
-            onPressed: () {
-              final myCurrentLocation = locationBloc.state.lastKnownLocation;
-              if (myCurrentLocation != null) {
-                mapBloc.add(const FollowingUserEvent(true));
-                mapBloc.moveCamera(myCurrentLocation);
-              }
-            },
-            child: const Icon(
-              Icons.my_location_rounded,
-            ),
-          ),
-        ],
-      ),
+      floatingActionButton: const FloatingActions(),
     );
   }
 }

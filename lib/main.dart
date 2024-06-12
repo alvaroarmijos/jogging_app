@@ -5,6 +5,7 @@ import 'package:tracking_app/src/packages/core/ui/ui.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/bloc/gps_permission_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/location_bloc/location_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/map_bloc/map_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/search_bloc/search_bloc.dart';
 import 'package:tracking_app/src/pages/loading_page.dart';
 
 void main() {
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider(
               create: (_) => di.sl<MapBloc>(),
+            ),
+            BlocProvider(
+              create: (_) => di.sl<SearchBloc>(),
             ),
           ],
           child: const LoadingPage(),
