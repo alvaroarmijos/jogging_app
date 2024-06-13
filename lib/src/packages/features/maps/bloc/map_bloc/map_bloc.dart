@@ -18,6 +18,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   }
 
   GoogleMapController? _mapController;
+  LatLng? mapCenter;
 
   FutureOr<void> _onMapInitializeEvent(
     MapInitializeEvent event,

@@ -1,7 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
-import 'package:tracking_app/src/packages/features/maps/search_bloc/search_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/location_bloc/location_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/map_bloc/map_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/search_bloc/search_bloc.dart';
 
 class ManualMarker extends StatelessWidget {
   const ManualMarker({super.key});
@@ -41,10 +44,12 @@ class ManualMarkerView extends StatelessWidget {
         Center(
           child: Transform.translate(
             offset: const Offset(0, -22),
-            child: Icon(
-              Icons.location_on_rounded,
-              size: AppDimens.dimen_48,
-              color: AppColors.primary,
+            child: BounceInDown(
+              child: Icon(
+                Icons.location_on_rounded,
+                size: AppDimens.dimen_48,
+                color: AppColors.primary,
+              ),
             ),
           ),
         ),
@@ -56,7 +61,18 @@ class ManualMarkerView extends StatelessWidget {
               horizontal: AppDimens.dimen_32,
             ),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                final start =
+                    context.read<LocationBloc>().state.lastKnownLocation;
+
+                if (start == null) return;
+
+                final end = context.read<MapBloc>().mapCenter;
+
+                if (end == null) return;
+
+                searchBloc.add(GetRouteEvent(start, end));
+              },
               child: const Text('Confirmar'),
             ),
           ),

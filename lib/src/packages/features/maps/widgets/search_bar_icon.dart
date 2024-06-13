@@ -2,12 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/colors.dart';
 import 'package:tracking_app/src/packages/core/ui/dimens.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/search_bloc/search_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/model/search_result.dart';
-import 'package:tracking_app/src/packages/features/maps/search_bloc/search_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/widgets/widgets.dart';
 
 class SearchbarIcon extends StatelessWidget {
   const SearchbarIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SearchBloc, SearchState>(builder: (context, state) {
+      return state.showManualMarker
+          ? const SizedBox()
+          : const SearchbarIconView();
+    });
+  }
+}
+
+class SearchbarIconView extends StatelessWidget {
+  const SearchbarIconView({super.key});
 
   @override
   Widget build(BuildContext context) {

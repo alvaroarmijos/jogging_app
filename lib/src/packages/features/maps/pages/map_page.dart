@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:tracking_app/src/packages/features/maps/location_bloc/location_bloc.dart';
-import 'package:tracking_app/src/packages/features/maps/map_bloc/map_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/location_bloc/location_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/map_bloc/map_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/widgets/widgets.dart';
 
 class MapPage extends StatefulWidget {

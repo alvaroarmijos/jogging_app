@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/app/di/injection_container.dart' as di;
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
 import 'package:tracking_app/src/packages/features/gps_permissions/bloc/gps_permission_bloc.dart';
-import 'package:tracking_app/src/packages/features/maps/location_bloc/location_bloc.dart';
-import 'package:tracking_app/src/packages/features/maps/map_bloc/map_bloc.dart';
-import 'package:tracking_app/src/packages/features/maps/search_bloc/search_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/location_bloc/location_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/map_bloc/map_bloc.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/search_bloc/search_bloc.dart';
 import 'package:tracking_app/src/pages/loading_page.dart';
 
 void main() {
