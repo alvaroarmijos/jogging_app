@@ -19,3 +19,13 @@ class GetRouteEvent extends SearchEvent {
   final LatLng start;
   final LatLng end;
 }
+
+class GetPlacesEvent extends SearchEvent {
+  const GetPlacesEvent(
+    this.proximity,
+    this.query,
+  );
+
+  final LatLng proximity;
+  final String query;
+}

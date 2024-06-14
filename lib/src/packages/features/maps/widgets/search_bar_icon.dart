@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/colors.dart';
 import 'package:tracking_app/src/packages/core/ui/dimens.dart';
+import 'package:tracking_app/src/packages/features/maps/bloc/location_bloc/location_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/bloc/search_bloc/search_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/model/search_result.dart';
 import 'package:tracking_app/src/packages/features/maps/widgets/widgets.dart';
@@ -29,6 +30,14 @@ class SearchbarIconView extends StatelessWidget {
 
       if (searchResult.manual) {
         searchBloc.add(const ShowManualMarkerEvent(true));
+      }
+
+      if (searchResult.position != null) {
+        final start = context.read<LocationBloc>().state.lastKnownLocation;
+
+        if (start == null) return;
+
+        searchBloc.add(GetRouteEvent(start, searchResult.position!));
       }
     }
 

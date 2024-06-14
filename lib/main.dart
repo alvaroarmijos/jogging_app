@@ -18,25 +18,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        theme: AppTheme.light,
-        title: 'Tracking App',
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) => di.sl<GpsPermissionBloc>(),
-            ),
-            BlocProvider(
-              create: (_) => di.sl<LocationBloc>(),
-            ),
-            BlocProvider(
-              create: (_) => di.sl<MapBloc>(),
-            ),
-            BlocProvider(
-              create: (_) => di.sl<SearchBloc>(),
-            ),
-          ],
-          child: const LoadingPage(),
-        ));
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => di.sl<LocationBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.sl<SearchBloc>(),
+        ),
+      ],
+      child: MaterialApp(
+          theme: AppTheme.light,
+          title: 'Tracking App',
+          home: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => di.sl<GpsPermissionBloc>(),
+              ),
+              // BlocProvider(
+              //   // create: (_) => di.sl<LocationBloc>(),
+              // ),
+              BlocProvider(
+                create: (_) => di.sl<MapBloc>(),
+              ),
+            ],
+            child: const LoadingPage(),
+          )),
+    );
   }
 }

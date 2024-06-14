@@ -199,3 +199,251 @@ class WaypointDto {
             location == null ? [] : List<dynamic>.from(location!.map((x) => x)),
       };
 }
+
+class PlacesDto {
+  String? type;
+  List<String>? query;
+  List<FeatureDto>? features;
+  String? attribution;
+
+  PlacesDto({
+    this.type,
+    this.query,
+    this.features,
+    this.attribution,
+  });
+
+  factory PlacesDto.fromRawJson(String str) =>
+      PlacesDto.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory PlacesDto.fromJson(Map<String, dynamic> json) => PlacesDto(
+        type: json["type"],
+        query: json["query"] == null
+            ? []
+            : List<String>.from(json["query"]!.map((x) => x)),
+        features: json["features"] == null
+            ? []
+            : List<FeatureDto>.from(
+                json["features"]!.map((x) => FeatureDto.fromJson(x))),
+        attribution: json["attribution"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "type": type,
+        "query": query == null ? [] : List<dynamic>.from(query!.map((x) => x)),
+        "features": features == null
+            ? []
+            : List<dynamic>.from(features!.map((x) => x.toJson())),
+        "attribution": attribution,
+      };
+}
+
+class FeatureDto {
+  String? id;
+  String? type;
+  List<String>? placeType;
+  int? relevance;
+  PropertiesDto? properties;
+  String? textEs;
+  String? placeNameEs;
+  String? text;
+  String? placeName;
+  List<double>? center;
+  GeometryDto? geometry;
+  List<ContextDto>? context;
+  String? matchingText;
+  String? matchingPlaceName;
+
+  FeatureDto({
+    this.id,
+    this.type,
+    this.placeType,
+    this.relevance,
+    this.properties,
+    this.textEs,
+    this.placeNameEs,
+    this.text,
+    this.placeName,
+    this.center,
+    this.geometry,
+    this.context,
+    this.matchingText,
+    this.matchingPlaceName,
+  });
+
+  factory FeatureDto.fromRawJson(String str) =>
+      FeatureDto.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FeatureDto.fromJson(Map<String, dynamic> json) => FeatureDto(
+        id: json["id"],
+        type: json["type"],
+        placeType: json["place_type"] == null
+            ? []
+            : List<String>.from(json["place_type"]!.map((x) => x)),
+        relevance: json["relevance"],
+        properties: json["properties"] == null
+            ? null
+            : PropertiesDto.fromJson(json["properties"]),
+        textEs: json["text_es"],
+        placeNameEs: json["place_name_es"],
+        text: json["text"],
+        placeName: json["place_name"],
+        center: json["center"] == null
+            ? []
+            : List<double>.from(json["center"]!.map((x) => x?.toDouble())),
+        geometry: json["geometry"] == null
+            ? null
+            : GeometryDto.fromJson(json["geometry"]),
+        context: json["context"] == null
+            ? []
+            : List<ContextDto>.from(
+                json["context"]!.map((x) => ContextDto.fromJson(x))),
+        matchingText: json["matching_text"],
+        matchingPlaceName: json["matching_place_name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "type": type,
+        "place_type": placeType == null
+            ? []
+            : List<dynamic>.from(placeType!.map((x) => x)),
+        "relevance": relevance,
+        "properties": properties?.toJson(),
+        "text_es": textEs,
+        "place_name_es": placeNameEs,
+        "text": text,
+        "place_name": placeName,
+        "center":
+            center == null ? [] : List<dynamic>.from(center!.map((x) => x)),
+        "geometry": geometry?.toJson(),
+        "context": context == null
+            ? []
+            : List<dynamic>.from(context!.map((x) => x.toJson())),
+        "matching_text": matchingText,
+        "matching_place_name": matchingPlaceName,
+      };
+}
+
+class ContextDto {
+  String? id;
+  String? mapboxId;
+  String? textEs;
+  String? text;
+  String? wikidata;
+  String? shortCode;
+
+  ContextDto({
+    this.id,
+    this.mapboxId,
+    this.textEs,
+    this.text,
+    this.wikidata,
+    this.shortCode,
+  });
+
+  factory ContextDto.fromRawJson(String str) =>
+      ContextDto.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory ContextDto.fromJson(Map<String, dynamic> json) => ContextDto(
+        id: json["id"],
+        mapboxId: json["mapbox_id"],
+        textEs: json["text_es"],
+        text: json["text"],
+        wikidata: json["wikidata"],
+        shortCode: json["short_code"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "mapbox_id": mapboxId,
+        "text_es": textEs,
+        "text": text,
+        "wikidata": wikidata,
+        "short_code": shortCode,
+      };
+}
+
+class GeometryDto {
+  List<double>? coordinates;
+  String? type;
+
+  GeometryDto({
+    this.coordinates,
+    this.type,
+  });
+
+  factory GeometryDto.fromRawJson(String str) =>
+      GeometryDto.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory GeometryDto.fromJson(Map<String, dynamic> json) => GeometryDto(
+        coordinates: json["coordinates"] == null
+            ? []
+            : List<double>.from(json["coordinates"]!.map((x) => x?.toDouble())),
+        type: json["type"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "coordinates": coordinates == null
+            ? []
+            : List<dynamic>.from(coordinates!.map((x) => x)),
+        "type": type,
+      };
+}
+
+class PropertiesDto {
+  String? foursquare;
+  bool? landmark;
+  String? address;
+  String? category;
+  String? wikidata;
+
+  PropertiesDto({
+    this.foursquare,
+    this.landmark,
+    this.address,
+    this.category,
+    this.wikidata,
+  });
+
+  factory PropertiesDto.fromRawJson(String str) =>
+      PropertiesDto.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory PropertiesDto.fromJson(Map<String, dynamic> json) => PropertiesDto(
+        foursquare: json["foursquare"],
+        landmark: json["landmark"],
+        address: json["address"],
+        category: json["category"],
+        wikidata: json["wikidata"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "foursquare": foursquare,
+        "landmark": landmark,
+        "address": address,
+        "category": category,
+        "wikidata": wikidata,
+      };
+}
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
+}

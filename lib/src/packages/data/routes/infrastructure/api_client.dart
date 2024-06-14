@@ -5,11 +5,14 @@ import 'package:tracking_app/src/packages/data/routes/infrastructure/routes_inte
 
 class RoutesApiClient {
   RoutesApiClient()
-      : _dioDirections = Dio()..interceptors.add(RoutesInterceptor());
+      : _dioDirections = Dio()..interceptors.add(RoutesInterceptor()),
+        _dioPlaces = Dio()..interceptors.add(PlacesInterceptor());
 
   final Dio _dioDirections;
+  final Dio _dioPlaces;
 
   final _baseDirectionsUrl = 'https://api.mapbox.com/directions/v5/mapbox';
+  final _basePlacesUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places';
 
   Future<DirectionsDto> getRouteStartToEnd(LatLng start, LatLng end) async {
     final coorsString =
@@ -22,5 +25,19 @@ class RoutesApiClient {
     final data = DirectionsDto.fromJson(response.data);
 
     return data;
+  }
+
+  Future<List<FeatureDto>> searchPlaces(LatLng proximity, String query) async {
+    if (query.trim().isEmpty) return [];
+
+    final url = '$_basePlacesUrl/$query.json';
+
+    final response = await _dioPlaces.get(url, queryParameters: {
+      'proximity': '${proximity.longitude},${proximity.latitude}'
+    });
+
+    final data = PlacesDto.fromJson(response.data);
+
+    return data.features ?? [];
   }
 }

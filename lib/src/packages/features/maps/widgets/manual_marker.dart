@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/core/ui/widgets/widgets.dart';
 import 'package:tracking_app/src/packages/features/maps/bloc/location_bloc/location_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/bloc/map_bloc/map_bloc.dart';
 import 'package:tracking_app/src/packages/features/maps/bloc/search_bloc/search_bloc.dart';
@@ -11,11 +12,28 @@ class ManualMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SearchBloc, SearchState>(builder: (context, state) {
-      return state.showManualMarker
-          ? const ManualMarkerView()
-          : const SizedBox();
-    });
+    return BlocConsumer<SearchBloc, SearchState>(
+      listenWhen: (previous, current) =>
+          previous.isLoading != current.isLoading,
+      listener: _listenState,
+      builder: (context, state) {
+        return state.showManualMarker
+            ? const ManualMarkerView()
+            : const SizedBox();
+      },
+    );
+  }
+
+  void _listenState(BuildContext context, SearchState state) {
+    if (state.directions != null) {
+      context.read<MapBloc>().add(AddPolylineDirectionEvent(state.directions!));
+    }
+
+    if (state.isLoading) {
+      showLoadingMessage(context);
+    } else {
+      Navigator.maybePop(context);
+    }
   }
 }
 

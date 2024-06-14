@@ -28,3 +28,9 @@ class FollowingUserEvent extends MapEvent {
 class ChangeShowUserRouteEvent extends MapEvent {
   const ChangeShowUserRouteEvent();
 }
+
+class AddPolylineDirectionEvent extends MapEvent {
+  const AddPolylineDirectionEvent(this.directions);
+
+  final Directions directions;
+}
