@@ -8,10 +8,12 @@ class MapView extends StatelessWidget {
     super.key,
     required this.lastKnownLocation,
     required this.polylines,
+    required this.markers,
   });
 
   final LatLng lastKnownLocation;
   final Set<Polyline> polylines;
+  final Set<Marker> markers;
   @override
   Widget build(BuildContext context) {
     final mapBloc = context.read<MapBloc>();
@@ -31,6 +33,7 @@ class MapView extends StatelessWidget {
           context.read<MapBloc>().add(MapInitializeEvent(controller));
         },
         polylines: polylines,
+        markers: markers,
       ),
     );
   }

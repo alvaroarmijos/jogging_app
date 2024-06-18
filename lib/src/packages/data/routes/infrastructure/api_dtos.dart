@@ -202,13 +202,11 @@ class WaypointDto {
 
 class PlacesDto {
   String? type;
-  List<String>? query;
   List<FeatureDto>? features;
   String? attribution;
 
   PlacesDto({
     this.type,
-    this.query,
     this.features,
     this.attribution,
   });
@@ -220,9 +218,6 @@ class PlacesDto {
 
   factory PlacesDto.fromJson(Map<String, dynamic> json) => PlacesDto(
         type: json["type"],
-        query: json["query"] == null
-            ? []
-            : List<String>.from(json["query"]!.map((x) => x)),
         features: json["features"] == null
             ? []
             : List<FeatureDto>.from(
@@ -232,7 +227,6 @@ class PlacesDto {
 
   Map<String, dynamic> toJson() => {
         "type": type,
-        "query": query == null ? [] : List<dynamic>.from(query!.map((x) => x)),
         "features": features == null
             ? []
             : List<dynamic>.from(features!.map((x) => x.toJson())),

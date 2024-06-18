@@ -6,7 +6,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
+import 'package:tracking_app/src/packages/core/ui/widgets/custom_images.markers.dart';
 import 'package:tracking_app/src/packages/data/routes/domain/directions/directions.dart';
+import 'package:tracking_app/src/packages/data/routes/domain/places/places.dart';
 
 part 'map_event.dart';
 part 'map_state.dart';
@@ -78,7 +80,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   FutureOr<void> _onAddPolylineDirectionEvent(
     AddPolylineDirectionEvent event,
     Emitter<MapState> emit,
-  ) {
+  ) async {
     final route = Polyline(
       polylineId: const PolylineId('route'),
       color: Colors.black,
@@ -88,13 +90,78 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       width: 5,
     );
 
+    double distanceKm = event.directions.distance / 1000;
+
+    distanceKm = (distanceKm * 100).floorToDouble();
+
+    distanceKm /= 100;
+
+    final duration = (event.directions.duration / 60).floorToDouble().toInt();
+
+    // Markers - Google maps
+    // final startMarker = Marker(
+    //   markerId: const MarkerId('start'),
+    //   position: event.directions.points[0],
+    //   infoWindow: InfoWindow(
+    //     title: 'Punto de inicio',
+    //     snippet: 'kms: $distanceKm, duration: $duration min.',
+    //   ),
+    // );
+
+    final assetIcon = await getAssetImageMarker();
+    final newtworkIcon = await getNetworkImageMarker();
+
+    // final startAssetMarker = Marker(
+    //   markerId: const MarkerId('start'),
+    //   position: event.directions.points[0],
+    //   icon: assetIcon,
+    //   infoWindow: InfoWindow(
+    //     title: 'Punto de inicio',
+    //     snippet: 'kms: $distanceKm, duration: $duration min.',
+    //   ),
+    // );
+
+    final startNetworkMarker = Marker(
+      markerId: const MarkerId('start'),
+      position: event.directions.points[0],
+      icon: newtworkIcon,
+      infoWindow: InfoWindow(
+        title: 'Punto de inicio',
+        snippet: 'kms: $distanceKm, duration: $duration min.',
+      ),
+    );
+
+    // Markers google maps
+
+    // final endMarker = Marker(
+    //   markerId: const MarkerId('end'),
+    //   position: event.directions.points.last,
+    //   infoWindow: InfoWindow(
+    //     title: event.endPlace?.text ?? 'Fin',
+    //   ),
+    // );
+
+    final endAssetMarker = Marker(
+      markerId: const MarkerId('end'),
+      position: event.directions.points.last,
+      icon: assetIcon,
+      infoWindow: InfoWindow(
+        title: event.endPlace?.text ?? 'Fin',
+      ),
+    );
+
     final currentPolylines = Map<String, Polyline>.from(state.polylines);
 
     currentPolylines['route'] = route;
 
+    final currentMarkers = Map<String, Marker>.from(state.markers);
+    currentMarkers['start'] = startNetworkMarker;
+    currentMarkers['end'] = endAssetMarker;
+
     emit(
       state.copyWith(
         polylines: currentPolylines,
+        markers: currentMarkers,
       ),
     );
   }

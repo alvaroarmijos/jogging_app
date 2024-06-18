@@ -20,7 +20,6 @@ class PlacesInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     options.queryParameters.addAll({
-      'limit': 7,
       'access_token':
           'pk.eyJ1IjoibGFsbzE1OTUiLCJhIjoiY2x4Y2l0NjJuM2xsaDJpcHZiZHkwNzQ1eiJ9.MTZiCSGz3DgoP-1kqdOQUg',
     });

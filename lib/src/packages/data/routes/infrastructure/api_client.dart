@@ -33,11 +33,24 @@ class RoutesApiClient {
     final url = '$_basePlacesUrl/$query.json';
 
     final response = await _dioPlaces.get(url, queryParameters: {
+      'limit': 7,
       'proximity': '${proximity.longitude},${proximity.latitude}'
     });
 
     final data = PlacesDto.fromJson(response.data);
 
     return data.features ?? [];
+  }
+
+  Future<FeatureDto?> reverseGeocoding(LatLng point) async {
+    final url = '$_basePlacesUrl/${point.longitude},${point.latitude}.json';
+
+    final response = await _dioPlaces.get(url, queryParameters: {
+      'limit': 1,
+    });
+
+    final data = PlacesDto.fromJson(response.data);
+
+    return data.features?.first;
   }
 }

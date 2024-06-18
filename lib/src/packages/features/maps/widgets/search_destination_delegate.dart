@@ -56,6 +56,7 @@ class SearchDestionationDelegate extends SearchDelegate<SearchResult> {
               color: AppColors.primary,
             ),
             onTap: () {
+              context.read<SearchBloc>().add(AddToHistoryEvent(place));
               final searchResult = SearchResult(
                   manual: false,
                   cancel: false,
@@ -78,15 +79,71 @@ class SearchDestionationDelegate extends SearchDelegate<SearchResult> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return ListTile(
-      leading: Icon(
-        Icons.location_on_rounded,
-        color: AppColors.primary,
-      ),
-      title: const Text('Colocar la ubicación en el mapa'),
-      onTap: () {
-        close(context, SearchResult(manual: true));
-      },
+    final serachBloc = context.read<SearchBloc>();
+    final history = serachBloc.state.history.toSet().toList();
+
+    return ListView(
+      children: [
+        ListTile(
+          leading: Icon(
+            Icons.location_on_rounded,
+            color: AppColors.primary,
+          ),
+          title: const Text('Colocar la ubicación en el mapa'),
+          onTap: () {
+            close(context, SearchResult(manual: true));
+          },
+        ),
+        ...history.map((place) => ListTile(
+              leading: Icon(
+                Icons.location_on_rounded,
+                color: AppColors.primary,
+              ),
+              title: Text(place.text),
+              subtitle: Text(place.placeName),
+              onTap: () {
+                context.read<SearchBloc>().add(AddToHistoryEvent(place));
+                final searchResult = SearchResult(
+                    manual: false,
+                    cancel: false,
+                    position: LatLng(
+                      place.center[1],
+                      place.center[0],
+                    ),
+                    name: place.text,
+                    description: place.placeName);
+                close(
+                  context,
+                  searchResult,
+                );
+              },
+            ))
+        // for (var i = 0; i < history.length; i++)
+        // ListTile(
+        //   leading: Icon(
+        //     Icons.location_on_rounded,
+        //     color: AppColors.primary,
+        //   ),
+        //   title: Text(history[i].text),
+        //   subtitle: Text(history[i].placeName),
+        //   onTap: () {
+        //     context.read<SearchBloc>().add(AddToHistoryEvent(history[i]));
+        //     final searchResult = SearchResult(
+        //         manual: false,
+        //         cancel: false,
+        //         position: LatLng(
+        //           history[i].center[1],
+        //           history[i].center[0],
+        //         ),
+        //         name: history[i].text,
+        //         description: history[i].placeName);
+        //     close(
+        //       context,
+        //       searchResult,
+        //     );
+        //   },
+        // )
+      ],
     );
   }
 }

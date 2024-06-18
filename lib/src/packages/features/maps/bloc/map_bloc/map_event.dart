@@ -30,7 +30,11 @@ class ChangeShowUserRouteEvent extends MapEvent {
 }
 
 class AddPolylineDirectionEvent extends MapEvent {
-  const AddPolylineDirectionEvent(this.directions);
+  const AddPolylineDirectionEvent(
+    this.directions,
+    this.endPlace,
+  );
 
   final Directions directions;
+  final Place? endPlace;
 }

@@ -29,3 +29,9 @@ class GetPlacesEvent extends SearchEvent {
   final LatLng proximity;
   final String query;
 }
+
+class AddToHistoryEvent extends SearchEvent {
+  const AddToHistoryEvent(this.place);
+
+  final Place place;
+}

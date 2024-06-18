@@ -3,4 +3,5 @@ import 'package:tracking_app/src/packages/data/routes/domain/places/places.dart'
 
 abstract class PlacesService {
   Stream<List<Place>> searchPlaces(LatLng proximity, String query);
+  Stream<Place?> getPlaceByPoint(LatLng point);
 }

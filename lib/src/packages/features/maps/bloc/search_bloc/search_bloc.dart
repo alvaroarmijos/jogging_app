@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:tracking_app/src/packages/data/routes/application/get_routes.dart';
-import 'package:tracking_app/src/packages/data/routes/application/search_places.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:tracking_app/src/packages/data/routes/application/application.dart';
 import 'package:tracking_app/src/packages/data/routes/domain/directions/directions.dart';
 import 'package:tracking_app/src/packages/data/routes/domain/places/places.dart';
 
@@ -15,14 +15,17 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc(
     this._getRoutes,
     this._searchPlaces,
+    this._getPlace,
   ) : super(const SearchState()) {
     on<ShowManualMarkerEvent>(_onShowManualMarkerEvent);
     on<GetRouteEvent>(_onGetRouteEvent);
     on<GetPlacesEvent>(_onGetPlacesEvent);
+    on<AddToHistoryEvent>(_onAddToHistoryEvent);
   }
 
   final GetRoutes _getRoutes;
   final SearchPlaces _searchPlaces;
+  final GetPlace _getPlace;
 
   FutureOr<void> _onShowManualMarkerEvent(
     ShowManualMarkerEvent event,
@@ -39,16 +42,24 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   ) {
     emit(state.copyWith(isLoading: true));
     return emit.forEach(
-        _getRoutes(
-          event.start,
-          event.end,
-        ), onData: (directions) {
-      return state.copyWith(
-        directions: directions,
-        showManualMarker: false,
-        isLoading: false,
-      );
-    });
+      Rx.combineLatest2(
+          _getRoutes(
+            event.start,
+            event.end,
+          ),
+          _getPlace(
+            event.end,
+          ),
+          (directions, endPlace) => (directions, endPlace)),
+      onData: (data) {
+        return state.copyWith(
+          directions: data.$1,
+          showManualMarker: false,
+          isLoading: false,
+          endPlace: data.$2,
+        );
+      },
+    );
   }
 
   FutureOr<void> _onGetPlacesEvent(
@@ -64,5 +75,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         return state.copyWith(places: places);
       },
     );
+  }
+
+  FutureOr<void> _onAddToHistoryEvent(
+    AddToHistoryEvent event,
+    Emitter<SearchState> emit,
+  ) {
+    emit(state.copyWith(history: [event.place, ...state.history]));
   }
 }

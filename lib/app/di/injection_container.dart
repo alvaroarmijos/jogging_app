@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:tracking_app/src/packages/data/device/application/application.dart';
-import 'package:tracking_app/src/packages/data/routes/application/get_routes.dart';
-import 'package:tracking_app/src/packages/data/routes/application/search_places.dart';
+import 'package:tracking_app/src/packages/data/routes/application/application.dart';
 import 'package:tracking_app/src/packages/data/routes/domain/directions/directions_service.dart';
 import 'package:tracking_app/src/packages/data/routes/domain/places/places_service.dart';
 import 'package:tracking_app/src/packages/data/routes/infrastructure/api_client.dart';
@@ -33,7 +32,7 @@ void setup() {
 
   sl.registerFactory(() => MapBloc());
 
-  sl.registerFactory(() => SearchBloc(sl(), sl()));
+  sl.registerFactory(() => SearchBloc(sl(), sl(), sl()));
 
   // Use cases
   sl.registerFactory(() => const GpsInitialStatus());
@@ -44,6 +43,7 @@ void setup() {
   sl.registerFactory(() => const GetInitialPosition());
   sl.registerFactory(() => const GpsPositionStream());
   sl.registerFactory(() => GetRoutes(sl()));
+  sl.registerFactory(() => GetPlace(sl()));
   sl.registerFactory(() => SearchPlaces(sl()));
 
   // Services

@@ -26,7 +26,9 @@ class ManualMarker extends StatelessWidget {
 
   void _listenState(BuildContext context, SearchState state) {
     if (state.directions != null) {
-      context.read<MapBloc>().add(AddPolylineDirectionEvent(state.directions!));
+      context
+          .read<MapBloc>()
+          .add(AddPolylineDirectionEvent(state.directions!, state.endPlace));
     }
 
     if (state.isLoading) {

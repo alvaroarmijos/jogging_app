@@ -20,4 +20,12 @@ class PlacesServiceImpl extends PlacesService {
         .asStream()
         .map((dtos) => _mapper.fromApiDtoList(dtos));
   }
+
+  @override
+  Stream<Place?> getPlaceByPoint(LatLng point) {
+    return _apiClient
+        .reverseGeocoding(point)
+        .asStream()
+        .map((dto) => dto == null ? null : _mapper.fromApiDto(dto));
+  }
 }
