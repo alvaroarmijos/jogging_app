@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:tracking_app/app/utility/lat_lan_bounds.dart';
+import 'package:tracking_app/src/packages/core/ui/helpers/widget_to_markers.dart';
 import 'package:tracking_app/src/packages/core/ui/ui.dart';
-import 'package:tracking_app/src/packages/core/ui/widgets/custom_images.markers.dart';
 import 'package:tracking_app/src/packages/data/routes/domain/directions/directions.dart';
 import 'package:tracking_app/src/packages/data/routes/domain/places/places.dart';
 
@@ -37,6 +39,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void moveCamera(LatLng newLocation) {
     final cameraUpdate = CameraUpdate.newLatLng(newLocation);
     _mapController?.moveCamera(cameraUpdate);
+  }
+
+  void centerMap(List<LatLng> list) {
+    final bounds = getLatLngBounds(list);
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLngBounds(bounds, 120),
+    );
   }
 
   FutureOr<void> _onUpdateUserPolylineEvent(
@@ -108,8 +117,23 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     //   ),
     // );
 
-    final assetIcon = await getAssetImageMarker();
-    final newtworkIcon = await getNetworkImageMarker();
+    // final assetIcon = await getAssetImageMarker();
+    // final newtworkIcon = await getNetworkImageMarker();
+
+    late BitmapDescriptor startMarkerBitmap;
+    late BitmapDescriptor endMarkerBitmap;
+
+    if (Platform.isAndroid) {
+      startMarkerBitmap =
+          await getStartUberMarker(duration, event.endPlace?.text ?? '');
+      endMarkerBitmap = await getEndUberMarker(
+          distanceKm.toInt(), event.endPlace?.placeName ?? '');
+    } else {
+      startMarkerBitmap =
+          await getCabifyMarker(true, '$distanceKm kms / $duration min');
+      endMarkerBitmap =
+          await getCabifyMarker(false, event.endPlace?.text ?? '');
+    }
 
     // final startAssetMarker = Marker(
     //   markerId: const MarkerId('start'),
@@ -121,10 +145,23 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     //   ),
     // );
 
-    final startNetworkMarker = Marker(
+    // final startNetworkMarker = Marker(
+    //   markerId: const MarkerId('start'),
+    //   position: event.directions.points[0],
+    //   icon: newtworkIcon,
+    //   infoWindow: InfoWindow(
+    //     title: 'Punto de inicio',
+    //     snippet: 'kms: $distanceKm, duration: $duration min.',
+    //   ),
+    // );
+
+    final startMarker = Marker(
       markerId: const MarkerId('start'),
       position: event.directions.points[0],
-      icon: newtworkIcon,
+      icon: startMarkerBitmap,
+      anchor: Platform.isAndroid
+          ? const Offset(0.05, 0.9)
+          : const Offset(0.95, 0.9),
       infoWindow: InfoWindow(
         title: 'Punto de inicio',
         snippet: 'kms: $distanceKm, duration: $duration min.',
@@ -141,10 +178,19 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     //   ),
     // );
 
-    final endAssetMarker = Marker(
+    // final endAssetMarker = Marker(
+    //   markerId: const MarkerId('end'),
+    //   position: event.directions.points.last,
+    //   icon: newtworkIcon,
+    //   infoWindow: InfoWindow(
+    //     title: event.endPlace?.text ?? 'Fin',
+    //   ),
+    // );
+
+    final endMarker = Marker(
       markerId: const MarkerId('end'),
       position: event.directions.points.last,
-      icon: assetIcon,
+      icon: endMarkerBitmap,
       infoWindow: InfoWindow(
         title: event.endPlace?.text ?? 'Fin',
       ),
@@ -155,8 +201,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     currentPolylines['route'] = route;
 
     final currentMarkers = Map<String, Marker>.from(state.markers);
-    currentMarkers['start'] = startNetworkMarker;
-    currentMarkers['end'] = endAssetMarker;
+    currentMarkers['start'] = startMarker;
+    currentMarkers['end'] = endMarker;
+
+    centerMap(event.directions.points);
 
     emit(
       state.copyWith(

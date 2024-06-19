@@ -13,11 +13,11 @@ Future<BitmapDescriptor> getAssetImageMarker() async {
 }
 
 Future<BitmapDescriptor> getNetworkImageMarker() async {
-  final res = await Dio().get(
-      'https://www.pinclipart.com/picdir/middle/363-3639653_pin-clip-art.png',
-      options: Options(
-        responseType: ResponseType.bytes,
-      ));
+  final res = await Dio()
+      .get('https://www.iconsdb.com/icons/preview/purple/marker-xxl.png',
+          options: Options(
+            responseType: ResponseType.bytes,
+          ));
 
   // Resize image
 

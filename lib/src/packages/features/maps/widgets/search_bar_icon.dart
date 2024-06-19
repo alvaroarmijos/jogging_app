@@ -41,27 +41,29 @@ class SearchbarIconView extends StatelessWidget {
       }
     }
 
-    return Align(
-      alignment: Alignment.topRight,
-      child: InkWell(
-        onTap: () async {
-          final result = await showSearch(
-            context: context,
-            delegate: SearchDestionationDelegate(),
-          );
+    return SafeArea(
+      child: Align(
+        alignment: Alignment.topRight,
+        child: InkWell(
+          onTap: () async {
+            final result = await showSearch(
+              context: context,
+              delegate: SearchDestionationDelegate(),
+            );
 
-          if (result != null) onSearchResult(context, result);
-        },
-        child: Container(
-          padding: const EdgeInsets.all(AppDimens.dimen_12),
-          margin: const EdgeInsets.all(AppDimens.dimen_24),
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-          ),
-          child: Icon(
-            Icons.search,
-            color: AppColors.primary,
+            if (result != null) onSearchResult(context, result);
+          },
+          child: Container(
+            padding: const EdgeInsets.all(AppDimens.dimen_12),
+            margin: const EdgeInsets.all(AppDimens.dimen_24),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+            child: Icon(
+              Icons.search,
+              color: AppColors.primary,
+            ),
           ),
         ),
       ),
